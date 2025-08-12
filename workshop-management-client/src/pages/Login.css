@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+.login-container {
+  height: 100vh;
+  background: linear-gradient(135deg, #74ebd5, #acb6e5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.login-form {
+  background-color: #fff;
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.login-form h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 600;
+  color: #3f51b5;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+input[type="email"],
+input[type="password"]
+input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #f9f9f9;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background-color: #303f9f;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 20px;
+  color: #666;
+  font-size: 14px;
+}
+
+.register-link span {
+  color: #3f51b5;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.register-link span:hover {
+  color: #303f9f;
+}
+
+/* Role-specific styling */
+.login-form h2 {
+  position: relative;
+}
+
+.login-form h2::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, #3f51b5, #4caf50);
+  border-radius: 2px;
+}

@@ -1,0 +1,201 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+/* Container layout */
+.container {
+  display: flex;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Sidebar styling - assuming existing Sidebar component styles */
+.mt-main-content {
+  flex: 1;
+  padding: 30px;
+  background-color: #f4f4f4;
+  margin-left: 260px;
+}
+
+/* Header styling */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.header h1 {
+  font-family: "Inter", sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.user-info {
+  text-align: right;
+}
+
+.user-role {
+  background: linear-gradient(135deg, #3f51b5, #4caf50);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* Table container styling */
+.table-content {
+  overflow-x: auto;
+}
+
+/* Table styling */
+.mt-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Table header styling */
+.mt-table thead {
+  background-color:deepskyblue;  /* Bootstrap primary blue */
+  color: #fff;
+}
+
+.mt-table th {
+  padding: 12px 15px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Table body styling */
+.mt-table tbody tr {
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.3s;
+}
+
+.mt-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.mt-table td {
+  padding: 12px 15px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Icon base styles */
+.icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 0 5px;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+/* Delete icon (trash can) */
+.icon-delete {
+  background-color: #ffe6e6;
+  color: #d32f2f; /* Red for delete */
+}
+
+.icon-delete::before {
+  content: "\1F5D1"; /* Unicode for trash can 🗑️ */
+}
+
+.icon-delete:hover {
+  background-color: #d32f2f;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+/* Edit icon (pencil) */
+.icon-edit {
+  background-color: #e6f3ff;
+  color: #1976d3; /* Blue for edit */
+}
+
+.icon-edit::before {
+  content: "\270E"; /* Unicode for pencil ✏️ */
+}
+
+.icon-edit:hover {
+  background-color: #1976d3;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+/* Disabled state for non-admin users */
+.icon.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #f5f5f5 !important;
+  color: #999 !important;
+}
+
+.icon.disabled:hover {
+  transform: none !important;
+  background-color: #f5f5f5 !important;
+  color: #999 !important;
+}
+
+/* Admin-only badge */
+.admin-only-badge {
+  background-color: #ff9800;
+  color: white;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: 8px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* Responsive design for header */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .user-info {
+    text-align: center;
+  }
+}
+
+/* Accessibility for icons */
+.icon[aria-label]:hover::after {
+  content: attr(aria-label);
+  position: absolute;
+  background: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-left: 10px;
+  z-index: 10;
+}
+
+/* Responsive adjustments */
+@media(max-width: 768px) {
+  .mt-main-content {
+    padding: 20px;
+  }
+  .header h1 {
+    font-size: 20px;
+  }
+}

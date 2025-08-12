@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+/* Container layout */
+.container {
+  display: flex;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+
+
+/* Sidebar styling - assuming existing Sidebar component styles */
+.his-main-content {
+  flex: 1;
+  padding: 30px;
+  background-color: #f4f4f4;
+  margin-left: 260px;
+}
+
+/* Header styling */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.header h1 {
+  font-family: "Inter", sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.user-info {
+  text-align: right;
+}
+
+.user-role {
+  background: linear-gradient(135deg, #3f51b5, #4caf50);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* Table container styling */
+.table-content {
+  overflow-x: auto;
+}
+
+/* Table styling */
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Table header styling */
+.history-table thead {
+  background-color: deepskyblue; /* Bootstrap primary blue */
+  color: #fff;
+}
+
+.history-table th {
+  padding: 12px 15px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Table body styling */
+.history-table tbody tr {
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.3s;
+}
+
+.history-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.history-table td {
+  padding: 12px 15px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Responsive adjustments */
+@media(max-width: 768px) {
+  .his-main-content {
+    padding: 20px;
+  }
+  .header h1 {
+    font-size: 20px;
+  }
+}

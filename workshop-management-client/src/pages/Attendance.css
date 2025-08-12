@@ -1,0 +1,406 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+/* Container layout */
+.container {
+  display: flex;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Sidebar styling - assuming existing Sidebar component styles */
+.att-main-content {
+  flex: 1;
+  padding: 30px;
+  background-color: #f4f4f4;
+  margin-left: 260px;
+}
+
+/* Header styling */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.header h1 {
+  font-family: "Inter", sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.user-info {
+  text-align: right;
+}
+
+.user-role {
+  background: linear-gradient(135deg, #3f51b5, #4caf50);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* Table container styling */
+.table-content {
+  overflow-x: auto;
+}
+
+/* Table styling */
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Table header styling */
+.attendance-table thead {
+  background-color: deepskyblue; /* Bootstrap primary blue */
+  color: #fff;
+}
+
+.attendance-table th {
+  padding: 12px 15px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Table body styling */
+.attendance-table tbody tr {
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.3s;
+}
+
+.attendance-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.attendance-table td {
+  padding: 12px 15px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Responsive adjustments */
+@media(max-width: 768px) {
+  .att-main-content {
+    padding: 20px;
+  }
+  .header h1 {
+    font-size: 20px;
+  }
+}
+
+/* Icon base styles */
+.icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 0 5px;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+/* Delete icon (trash can) */
+.icon-delete {
+  background-color: #ffe6e6;
+  color: #d32f2f; /* Red for delete */
+}
+
+.icon-delete::before {
+  content: "\1F5D1"; /* Unicode for trash can 🗑️ */
+}
+
+.icon-delete:hover {
+  background-color: #d32f2f;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+/* Edit icon (pencil) */
+.icon-edit {
+  background-color: #e6f3ff;
+  color: #1976d3; /* Blue for edit */
+}
+
+.icon-edit::before {
+  content: "\270E"; /* Unicode for pencil ✏️ */
+}
+
+.icon-edit:hover {
+  background-color: #1976d3;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.icon-attnd {
+  background-color: #e6f3ff;
+  color: #1976d3; /* Blue for edit */
+}
+
+.icon-attnd::before {
+  content: "\2705"; /* Unicode for checkmark button ✅ */
+}
+
+.icon-attnd:hover {
+  background-color: greenyellow;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+/* Accessibility for icons */
+.icon[aria-label]:hover::after {
+  content: attr(aria-label);
+  position: absolute;
+  background: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-left: 10px;
+  z-index: 10;
+}
+
+/* Overlay styling */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.overlay-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 95%;
+  width: 1000px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.overlay-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.overlay-header p {
+  margin: 0;
+  font-size: 16px;
+  flex: 1;
+  min-width: 120px;
+}
+
+.overlay-header .close-button, .overlay-header .new-mem-button {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  font-size: 16px;
+}
+
+.overlay-table {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.overlay-table .attendance-table {
+  margin-top: 20px;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.close-button, .new-mem-button, .confirm-button, .reject-button, .submit-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 10px 20px;
+  margin: 5px;
+}
+
+.close-button:hover, .new-mem-button:hover, .confirm-button:hover, .reject-button:hover, .submit-button:hover {
+  background-color: #0056b3;
+}
+
+/* New member form styling */
+.new-member-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* Container for Submit and Close buttons */
+.form-footer-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.confirm-button {
+  background-color: #28a745;
+}
+
+.confirm-button:hover {
+  background-color: #218838;
+}
+
+.reject-button {
+  background-color: #dc3545;
+}
+
+.reject-button:hover {
+  background-color: #c82333;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .overlay-content {
+    width: calc(100% - 20px);
+    max-width: 90%;
+  }
+
+  .attendance-table th,
+  .attendance-table td {
+    padding: 6px;
+    font-size: 14px;
+  }
+
+  .icon::before {
+    font-size: 14px;
+  }
+
+  .overlay-header {
+    gap: 10px;
+  }
+
+  .overlay-header p {
+    font-size: 14px;
+    min-width: 100px;
+  }
+
+  .overlay-header .close-button, .overlay-header .new-mem-button {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .form-group label {
+    font-size: 13px;
+  }
+
+  .form-group input {
+    font-size: 13px;
+    padding: 6px;
+  }
+
+  .form-footer-actions {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .overlay-content {
+    padding: 15px;
+    margin: 10px;
+  }
+
+  .overlay-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .overlay-header p {
+    font-size: 13px;
+    min-width: 0;
+  }
+
+  .overlay-header .close-button, .overlay-header .new-mem-button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .attendance-table th,
+  .attendance-table td {
+    padding: 4px;
+    font-size: 12px;
+  }
+
+  .form-group label {
+    font-size: 12px;
+  }
+
+  .form-group input {
+    font-size: 12px;
+    padding: 4px;
+  }
+
+  .form-actions, .form-footer-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .close-button, .new-mem-button, .confirm-button, .reject-button, .submit-button {
+    width: 100%;
+    margin: 5px 0;
+  }
+}

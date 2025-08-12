@@ -1,0 +1,288 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+/* Main content styling */
+.albm-main-content {
+  flex: 1;
+  padding: 30px;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  overflow-y: auto;
+  margin-left: 260px;
+}
+
+/* Header styling */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.header h1 {
+  font-family: "Inter", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.user-info {
+  text-align: right;
+}
+
+.user-role {
+  background: linear-gradient(135deg, #3f51b5, #4caf50);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* Upload section styling */
+.upload-section {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.upload-area {
+  text-align: center;
+  padding: 20px;
+  border: 2px dashed #e2e8f0;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.upload-area:hover {
+  border-color: #3f51b5;
+  background-color: #f8fafc;
+}
+
+.upload-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 32px;
+  background: linear-gradient(135deg, #3f51b5, #4caf50);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(63, 81, 181, 0.3);
+}
+
+.upload-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(63, 81, 181, 0.4);
+}
+
+.upload-button:active {
+  transform: translateY(0);
+}
+
+.upload-icon {
+  font-size: 20px;
+}
+
+.upload-hint {
+  margin-top: 12px;
+  color: #64748b;
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* Album content styling */
+.album-content {
+  overflow-x: auto;
+}
+
+/* Image grid styling */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  padding: 10px;
+}
+
+/* Image item styling */
+.image-item {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.image-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* Image container styling */
+.image-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+/* Image styling */
+.album-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.image-item:hover .album-image {
+  transform: scale(1.05);
+}
+
+/* Image overlay styling */
+.image-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: white;
+  padding: 20px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.image-item:hover .image-overlay {
+  transform: translateY(0);
+}
+
+/* Image info styling */
+.image-info h4 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+}
+
+.image-info p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #e2e8f0;
+  opacity: 0.9;
+}
+
+/* Delete button styling */
+.delete-image-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(239, 68, 68, 0.95);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: scale(0.8);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.image-item:hover .delete-image-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.delete-image-btn:hover {
+  background: #dc2626;
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .image-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .albm-main-content {
+    padding: 20px;
+    margin-left: 0;
+  }
+  
+  .header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .header h1 {
+    font-size: 24px;
+  }
+  
+  .image-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .upload-button {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+  
+  .album-image {
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .albm-main-content {
+    padding: 15px;
+  }
+  
+  .upload-section {
+    padding: 15px;
+  }
+  
+  .upload-area {
+    padding: 15px;
+  }
+  
+  .upload-button {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+  
+  .image-info h4 {
+    font-size: 16px;
+  }
+  
+  .image-info p {
+    font-size: 12px;
+  }
+  
+  .delete-image-btn {
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+}
