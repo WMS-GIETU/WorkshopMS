@@ -6,6 +6,7 @@ services:
     buildCommand: |
       cd workshop-management-server
       npm install
+      ls -la node_modules/dotenv # Debugging line
       cd ../workshop-management-client
       npm install
       npm run build
