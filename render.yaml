@@ -10,7 +10,7 @@ services:
       cd ../workshop-management-client
       npm install
       npm run build
-    startCommand: 'cd workshop-management-server && node server.js'
+    startCommand: 'cd workshop-management-server && npm start'
     envVars:
       - key: NODE_ENV
         value: production
