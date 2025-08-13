@@ -8,6 +8,7 @@ const workshopRequestRoutes = require('./routes/workshopRequests');
 const registrationRequestRoutes = require('./routes/registrationRequests');
 const workshopRoutes = require('./routes/workshops');
 const albumRoutes = require('./routes/album');
+const path = require('path');
 
 const app = express();
 app.use(cors());
@@ -19,6 +20,15 @@ app.use('/api/workshop-requests', workshopRequestRoutes);
 app.use('/api/registration-requests', registrationRequestRoutes);
 app.use('/api/workshops', workshopRoutes);
 app.use('/api/album', albumRoutes);
+
+// Serve frontend
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../workshop-management-client/build')));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, '../workshop-management-client', 'build', 'index.html'));
+    });
+}
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {

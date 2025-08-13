@@ -17,7 +17,7 @@ const RejectRequest = () => {
 
   const fetchRequestDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/registration-requests/status/${requestId}`);
+      const response = await fetch(`/api/registration-requests/status/${requestId}`);
       const data = await response.json();
       
       if (response.ok) {
@@ -40,7 +40,7 @@ const RejectRequest = () => {
 
     setProcessing(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/registration-requests/reject/${requestId}`, {
+      const response = await fetch(`/api/registration-requests/reject/${requestId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

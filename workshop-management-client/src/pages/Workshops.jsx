@@ -28,7 +28,7 @@ const Workshops = () => {
   const fetchWorkshops = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/workshops', {
+      const response = await fetch('/api/workshops', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -57,7 +57,7 @@ const Workshops = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/workshops/${workshopId}`, {
+      const response = await fetch(`/api/workshops/${workshopId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

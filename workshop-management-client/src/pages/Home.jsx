@@ -31,7 +31,7 @@ const Home = () => {
   useEffect(() => {
     const fetchWorkshops = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/workshops/public');
+        const response = await fetch('/api/workshops/public');
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

@@ -78,7 +78,7 @@ const Register = () => {
 
     try {
       console.log('Checking admin for club code:', formData.clubCode);
-      const url = `http://localhost:5000/api/auth/check-admin/${formData.clubCode}`;
+      const url = `/api/auth/check-admin/${formData.clubCode}`;
       console.log('Request URL:', url);
       
       const response = await fetch(url, {
@@ -125,7 +125,7 @@ const Register = () => {
         clubCode: formData.clubCode
       });
       
-      const response = await fetch('http://localhost:5000/api/registration-requests/submit-request', {
+      const response = await fetch('/api/registration-requests/submit-request', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

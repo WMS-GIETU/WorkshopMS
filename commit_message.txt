@@ -1,0 +1,10 @@
+feat: Prepare project for Render deployment
+
+This commit introduces the necessary configurations and code changes
+to deploy the Workshop Management System to Render.com.
+
+Key changes include:
+- Added `render.yaml` for Render service definition, including build and start commands.
+- Modified `workshop-management-server/server.js` to serve the client's static build files in production.
+- Updated client-side API calls in `workshop-management-client/src/pages/*.jsx` to use relative paths, ensuring proper routing in the deployed environment.
+- Adjusted `.gitignore` to ensure the client's `build` directory is tracked for deployment.

@@ -87,7 +87,7 @@ const NewWorkshop = () => {
       });
 
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/workshops/create', {
+      const response = await fetch('/api/workshops/create', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`

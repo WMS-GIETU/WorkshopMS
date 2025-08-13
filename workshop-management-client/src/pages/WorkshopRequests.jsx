@@ -19,7 +19,7 @@ const WorkshopRequests = () => {
   const fetchRequests = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/workshop-requests/requests', {
+      const response = await fetch('/api/workshop-requests/requests', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -39,7 +39,7 @@ const WorkshopRequests = () => {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/workshop-requests/stats', {
+      const response = await fetch('/api/workshop-requests/stats', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -59,7 +59,7 @@ const WorkshopRequests = () => {
     
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/workshop-requests/approve/${requestId}`, {
+      const response = await fetch(`/api/workshop-requests/approve/${requestId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ const WorkshopRequests = () => {
     
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/workshop-requests/reject/${requestId}`, {
+      const response = await fetch(`/api/workshop-requests/reject/${requestId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: workshop-management
+    env: node
+    plan: free
+    buildCommand: |
+      cd workshop-management-server
+      npm install
+      cd ../workshop-management-client
+      npm install
+      npm run build
+    startCommand: 'cd workshop-management-server && node server.js'
+    envVars:
+      - key: NODE_ENV
+        value: production

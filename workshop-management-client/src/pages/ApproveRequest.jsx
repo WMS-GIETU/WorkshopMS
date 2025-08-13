@@ -16,7 +16,7 @@ const ApproveRequest = () => {
 
   const fetchRequestDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/registration-requests/status/${requestId}`);
+      const response = await fetch(`/api/registration-requests/status/${requestId}`);
       const data = await response.json();
       
       if (response.ok) {
@@ -34,7 +34,7 @@ const ApproveRequest = () => {
   const handleApprove = async () => {
     setProcessing(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/registration-requests/approve/${requestId}`, {
+      const response = await fetch(`/api/registration-requests/approve/${requestId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ const ApproveRequest = () => {
 
     setProcessing(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/registration-requests/reject/${requestId}`, {
+      const response = await fetch(`/api/registration-requests/reject/${requestId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
