@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth');
 const workshopRequestRoutes = require('./routes/workshopRequests');
 const registrationRequestRoutes = require('./routes/registrationRequests');
 const workshopRoutes = require('./routes/workshops');
+const albumRoutes = require('./routes/album');
 
 const app = express();
 app.use(cors());
@@ -17,6 +18,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/workshop-requests', workshopRequestRoutes);
 app.use('/api/registration-requests', registrationRequestRoutes);
 app.use('/api/workshops', workshopRoutes);
+app.use('/api/album', albumRoutes);
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {

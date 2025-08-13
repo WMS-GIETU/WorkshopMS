@@ -242,17 +242,6 @@ const WorkshopRequests = () => {
                           </button>
                         </>
                       )}
-                      {request.status === 'approved' && (
-                        <div className="approved-info">
-                          <p>✅ Workshop automatically created</p>
-                          <button 
-                            className="view-workshop-btn"
-                            onClick={() => navigate('/workshops')}
-                          >
-                            🏠 View All Workshops
-                          </button>
-                        </div>
-                      )}
                     </div>
                   )}
                 </div>
