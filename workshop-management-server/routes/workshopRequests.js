@@ -2,9 +2,11 @@ const express = require('express');
 const WorkshopRequest = require('../models/WorkshopRequest');
 const Workshop = require('../models/Workshop');
 const User = require('../models/User');
+const WorkshopImage = require('../models/WorkshopImage'); // Import the new model
 const authMiddleware = require('../middleware/authMiddleware');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs'); // Import fs to read the file
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -118,6 +120,28 @@ router.put('/approve/:requestId', authMiddleware, async (req, res) => {
       return res.status(400).json({ message: 'Request has already been processed' });
     }
 
+    let workshopImageId = null;
+    if (request.image) { // If an image was submitted with the request
+      const imagePath = path.join(__dirname, '..', request.image); // Construct full path
+      const imageBuffer = fs.readFileSync(imagePath); // Read the image file into a buffer
+      const contentType = path.extname(request.image).toLowerCase() === '.png' ? 'image/png' : 'image/jpeg'; // Determine content type
+
+      const newWorkshopImage = new WorkshopImage({
+        image: {
+          data: imageBuffer,
+          contentType: contentType,
+        },
+        // workshopId will be set after workshop is saved
+        uploadedBy: userId, // Admin approving the request
+        clubCode: clubCode,
+      });
+      await newWorkshopImage.save();
+      workshopImageId = newWorkshopImage._id;
+
+      // Optionally, delete the file from the uploads folder after saving to DB
+      fs.unlinkSync(imagePath);
+    }
+
     // Create the workshop from the approved request
     const workshop = new Workshop({
       name: request.workshopName,
@@ -128,11 +152,16 @@ router.put('/approve/:requestId', authMiddleware, async (req, res) => {
       description: request.description,
       maxParticipants: request.maxParticipants,
       clubCode: request.clubCode,
-      image: request.image, // Copy image from request
+      image: workshopImageId, // Use the ID of the WorkshopImage
       createdBy: userId
     });
 
     await workshop.save();
+
+    // Now that workshop is saved, update the workshopId in WorkshopImage if an image was processed
+    if (workshopImageId) {
+      await WorkshopImage.findByIdAndUpdate(workshopImageId, { workshopId: workshop._id });
+    }
 
     // Update request status
     request.status = 'approved';

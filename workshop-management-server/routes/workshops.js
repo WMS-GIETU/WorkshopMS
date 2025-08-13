@@ -1,8 +1,10 @@
 const express = require('express');
 const Workshop = require('../models/Workshop');
+const WorkshopImage = require('../models/WorkshopImage'); // Import the new model
 const authMiddleware = require('../middleware/authMiddleware');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs'); // Import fs to read the file
 
 const router = express.Router();
 
@@ -42,6 +44,28 @@ router.post('/create', authMiddleware, upload.single('image'), async (req, res) 
       return res.status(403).json({ message: 'You can only create workshops for your own club' });
     }
 
+    let workshopImageId = null;
+    if (req.file) {
+      const imagePath = req.file.path;
+      const imageBuffer = fs.readFileSync(imagePath); // Read the image file into a buffer
+      const contentType = req.file.mimetype;
+
+      const newWorkshopImage = new WorkshopImage({
+        image: {
+          data: imageBuffer,
+          contentType: contentType,
+        },
+        // workshopId will be set after workshop is saved
+        uploadedBy: userId,
+        clubCode: clubCode,
+      });
+      await newWorkshopImage.save();
+      workshopImageId = newWorkshopImage._id;
+
+      // Optionally, delete the file from the uploads folder after saving to DB
+      fs.unlinkSync(imagePath);
+    }
+
     const workshop = new Workshop({
       name,
       date,
@@ -51,11 +75,16 @@ router.post('/create', authMiddleware, upload.single('image'), async (req, res) 
       description,
       maxParticipants,
       clubCode,
-      image: req.file ? req.file.path : '',
+      image: workshopImageId, // Store the ID of the WorkshopImage
       createdBy: userId
     });
 
     await workshop.save();
+
+    // Now that workshop is saved, update the workshopId in WorkshopImage
+    if (workshopImageId) {
+      await WorkshopImage.findByIdAndUpdate(workshopImageId, { workshopId: workshop._id });
+    }
 
     res.status(201).json({ message: 'Workshop created successfully', workshop });
   } catch (error) {
@@ -67,14 +96,8 @@ router.post('/create', authMiddleware, upload.single('image'), async (req, res) 
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const { clubCode } = req.user;
-    const workshops = await Workshop.find({ clubCode });
-    const modifiedWorkshops = workshops.map(workshop => {
-      if (workshop.image) {
-        workshop.image = workshop.image.replace(/\\/g, '/');
-      }
-      return workshop;
-    });
-    res.json(modifiedWorkshops);
+    const workshops = await Workshop.find({ clubCode }).populate('image'); // Populate the image field
+    res.json(workshops); // No need for modifiedWorkshops map if image is populated correctly
   } catch (error) {
     console.error('Get workshops error:', error);
     res.status(500).json({ message: 'Failed to get workshops' });
@@ -84,14 +107,8 @@ router.get('/', authMiddleware, async (req, res) => {
 // Add public route for unauthenticated access (e.g., Home page)
 router.get('/public', async (req, res) => {
   try {
-    const workshops = await Workshop.find({});
-    const modifiedWorkshops = workshops.map(workshop => {
-      if (workshop.image) {
-        workshop.image = workshop.image.replace(/\\/g, '/');
-      }
-      return workshop;
-    });
-    res.json(modifiedWorkshops);
+    const workshops = await Workshop.find({}).populate('image'); // Populate the image field
+    res.json(workshops); // No need for modifiedWorkshops map if image is populated correctly
   } catch (error) {
     console.error('Get public workshops error:', error);
     res.status(500).json({ message: 'Failed to get workshops' });
@@ -115,6 +132,11 @@ router.delete('/:workshopId', authMiddleware, async (req, res) => {
 
     if (workshop.clubCode !== clubCode) {
       return res.status(403).json({ message: 'You can only delete workshops from your own club' });
+    }
+
+    // If there's an associated image, delete it from WorkshopImage collection
+    if (workshop.image) {
+      await WorkshopImage.findByIdAndDelete(workshop.image);
     }
 
     await Workshop.findByIdAndDelete(workshopId);

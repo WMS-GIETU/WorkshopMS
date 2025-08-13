@@ -22,6 +22,19 @@ const NewWorkshop = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Helper function to convert buffer to base64 URL
+  const getImageSrc = (imageData) => {
+    if (!imageData || !imageData.data || !imageData.contentType) return '';
+    const buffer = imageData.data.data; // Access the actual buffer
+    const b64 = btoa(
+      new Uint8Array(buffer).reduce(
+        (data, byte) => data + String.fromCharCode(byte),
+        ''
+      )
+    );
+    return `data:${imageData.contentType};base64,${b64}`;
+  };
+
   useEffect(() => {
     if (request) {
       setFormData({
@@ -264,7 +277,7 @@ const NewWorkshop = () => {
               {request && request.image && (
                 <div>
                   <p>Existing Image:</p>
-                  <img src={`http://localhost:5000/${request.image}`} alt="Existing workshop image" style={{maxWidth: '200px'}} />
+                  <img src={getImageSrc(request.image)} alt="Existing workshop image" style={{maxWidth: '200px'}} />
                 </div>
               )}
             </div>

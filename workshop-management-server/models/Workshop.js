@@ -34,8 +34,9 @@ const WorkshopSchema = new mongoose.Schema({
     required: true
   },
   image: {
-    type: String,
-    default: ''
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'WorkshopImage',
+    default: null
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,

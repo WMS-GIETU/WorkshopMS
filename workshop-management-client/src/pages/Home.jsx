@@ -8,6 +8,19 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Helper function to convert buffer to base64 URL
+  const getImageSrc = (imageData) => {
+    if (!imageData || !imageData.data || !imageData.contentType) return '';
+    const buffer = imageData.data.data; // Access the actual buffer
+    const b64 = btoa(
+      new Uint8Array(buffer).reduce(
+        (data, byte) => data + String.fromCharCode(byte),
+        ''
+      )
+    );
+    return `data:${imageData.contentType};base64,${b64}`;
+  };
+
   // Optional: Static mapping of clubCode to clubName if no API is available
   // const clubNameMap = {
   //   'CODE123': 'Coding Club',
@@ -98,7 +111,7 @@ const Home = () => {
           <div className="workshop-cards1">
             {workshops.map(w => (
               <div key={w._id} className="workshop-card1" onClick={() => handleCardClick(w.name,w.description)}>
-                {w.image && <img src={`http://localhost:5000/${w.image}`} alt={w.name} className="workshop-image" />}
+                {w.image && <img src={getImageSrc(w.image.image)} alt={w.name} className="workshop-image" />}
                 <div className="workshop-info">
                   <h3>{w.name}</h3>
                   <p><strong>Club:</strong> {w.clubCode}</p> {/* Changed from clubName to clubCode */}

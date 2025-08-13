@@ -8,6 +8,19 @@ const Workshops = () => {
   const [workshops, setWorkshops] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Helper function to convert buffer to base64 URL
+  const getImageSrc = (imageData) => {
+    if (!imageData || !imageData.data || !imageData.contentType) return '';
+    const buffer = imageData.data.data; // Access the actual buffer
+    const b64 = btoa(
+      new Uint8Array(buffer).reduce(
+        (data, byte) => data + String.fromCharCode(byte),
+        ''
+      )
+    );
+    return `data:${imageData.contentType};base64,${b64}`;
+  };
+
   useEffect(() => {
     fetchWorkshops();
   }, []);
@@ -92,8 +105,9 @@ const Workshops = () => {
         <div className="workshop-cards">
           {workshops.map((workshop) => (
             <div key={workshop._id} className="workshop-card">
+              {console.log('Workshop image data:', workshop.image)}
               {workshop.image && (
-                <img src={`http://localhost:5000/${workshop.image}`} alt={workshop.name} className="workshop-image" />
+                <img src={getImageSrc(workshop.image.image)} alt={workshop.name} className="workshop-image" />
               )}
               <h3>{workshop.name}</h3>
               <p className="topic">{workshop.topic}</p>
