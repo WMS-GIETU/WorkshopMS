@@ -8,6 +8,8 @@ const workshopRequestRoutes = require('./routes/workshopRequests');
 const registrationRequestRoutes = require('./routes/registrationRequests');
 const workshopRoutes = require('./routes/workshops');
 const albumRoutes = require('./routes/album');
+const workshopRegistrationRoutes = require('./routes/workshopRegistration');
+const attendanceRoutes = require('./routes/attendance');
 const path = require('path');
 
 const app = express();
@@ -20,6 +22,8 @@ app.use('/api/workshop-requests', workshopRequestRoutes);
 app.use('/api/registration-requests', registrationRequestRoutes);
 app.use('/api/workshops', workshopRoutes);
 app.use('/api/album', albumRoutes);
+app.use('/api/workshop-registrations', workshopRegistrationRoutes);
+app.use('/api/attendance', attendanceRoutes);
 
 // Serve frontend
 if (process.env.NODE_ENV === 'production') {

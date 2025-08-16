@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import { useAuth } from '../context/AuthContext';
 import './NewWorkshop.css';
@@ -8,6 +8,7 @@ const NewWorkshop = () => {
   const { isAdmin, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { workshopId } = useParams(); // Get workshopId from URL parameters
   const request = location.state?.request;
   const [formData, setFormData] = useState({
     name: '',
@@ -21,6 +22,7 @@ const NewWorkshop = () => {
     image: null
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Helper function to convert buffer to base64 URL
   const getImageSrc = (imageData) => {
@@ -36,20 +38,59 @@ const NewWorkshop = () => {
   };
 
   useEffect(() => {
-    if (request) {
-      setFormData({
-        name: request.workshopName || '',
-        date: request.date || '',
-        time: request.time || '',
-        location: request.location || '',
-        topic: request.topic || '',
-        description: request.description || '',
-        maxParticipants: request.maxParticipants || '',
-        clubCode: request.clubCode || user?.clubCode || '',
-        image: null // File cannot be pre-filled, but image URL can be handled separately if needed
-      });
+    if (workshopId) {
+      // Fetch workshop data for editing
+      const fetchWorkshop = async () => {
+        try {
+          const token = localStorage.getItem('token');
+          const response = await fetch(`/api/workshops/${workshopId}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          if (response.ok) {
+            const data = await response.json();
+            setFormData({
+              name: data.name || '',
+              date: data.date ? new Date(data.date).toISOString().split('T')[0] : '', // Format date for input
+              time: data.time || '',
+              location: data.location || '',
+              topic: data.topic || '',
+              description: data.description || '',
+              maxParticipants: data.maxParticipants || '',
+              clubCode: data.clubCode || user?.clubCode || '',
+              image: null // Image file cannot be pre-filled, but existing image can be displayed
+            });
+          } else {
+            alert('Failed to fetch workshop details.');
+            navigate('/attendance'); // Redirect if workshop not found or error
+          }
+        } catch (error) {
+          console.error('Error fetching workshop:', error);
+          alert('An error occurred while fetching workshop details.');
+          navigate('/attendance');
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchWorkshop();
+    } else {
+      if (request) {
+        setFormData({
+          name: request.workshopName || '',
+          date: request.date || '',
+          time: request.time || '',
+          location: request.location || '',
+          topic: request.topic || '',
+          description: request.description || '',
+          maxParticipants: request.maxParticipants || '',
+          clubCode: request.clubCode || user?.clubCode || '',
+          image: null // File cannot be pre-filled, but image URL can be handled separately if needed
+        });
+      }
+      setLoading(false);
     }
-  }, [request, user]);
+  }, [workshopId, request, user, navigate]);
 
   useEffect(() => {
     if (user && !request) {
@@ -86,9 +127,12 @@ const NewWorkshop = () => {
         }
       });
 
+      const method = workshopId ? 'PUT' : 'POST';
+      const url = workshopId ? `/api/workshops/${workshopId}` : '/api/workshops/create';
+
       const token = localStorage.getItem('token');
-      const response = await fetch('/api/workshops/create', {
-        method: 'POST',
+      const response = await fetch(url, {
+        method: method,
         headers: {
           'Authorization': `Bearer ${token}`
         },
@@ -96,7 +140,7 @@ const NewWorkshop = () => {
       });
 
       if (response.ok) {
-        alert('Workshop created successfully!');
+        alert(`Workshop ${workshopId ? 'updated' : 'created'} successfully!`);
         setFormData({
           name: '',
           date: '',
@@ -111,10 +155,10 @@ const NewWorkshop = () => {
         navigate('/workshops'); // Assuming a route to view workshops
       } else {
         const data = await response.json();
-        alert(data.message || 'Failed to create workshop');
+        alert(data.message || `Failed to ${workshopId ? 'update' : 'create'} workshop`);
       }
     } catch (error) {
-      alert('Failed to create workshop. Please try again.');
+      alert(`Failed to ${workshopId ? 'update' : 'create'} workshop. Please try again.`);
     } finally {
       setIsSubmitting(false);
     }
@@ -150,13 +194,22 @@ const NewWorkshop = () => {
     );
   }
 
+  if (loading) {
+    return (
+      <div className="container">
+        <Sidebar />
+        <div className="loading">Loading...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="container">
       <Sidebar />
       <main className="main-content">
         <div className="workshop-form">
           <div className="form-header">
-            <h2>{request ? 'Create Workshop from Request' : 'Create New Workshop'}</h2>
+            <h2>{workshopId ? 'Edit Workshop' : (request ? 'Create Workshop from Request' : 'Create New Workshop')}</h2>
             <div className="user-info">
               <span className='user-role'>
                 Logged in as: {user?.username} ({Array.isArray(user?.roles) && user.roles.includes('admin') ? 'Administrator' : 'Club Member'})

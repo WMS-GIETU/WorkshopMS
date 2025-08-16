@@ -1,22 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-
-/* Container layout */
+/* Styles for the main container to arrange sidebar and content */
 .container {
   display: flex;
   min-height: 100vh;
-  font-family: Arial, sans-serif;
-  overflow-x: hidden;
+  font-family: Arial, sans-serif; /* Added from ManageTeam.css */
+  overflow-x: hidden; /* Added from ManageTeam.css */
 }
 
-/* Sidebar styling - assuming existing Sidebar component styles */
+/* Styles for the main content area */
 .att-main-content {
-  flex: 1;
-  padding: 30px;
-  background-color: #f4f4f4;
-  margin-left: 260px;
+  flex: 1; /* Changed from flex-grow: 1 to flex: 1 for consistency with ManageTeam.css */
+  padding: 30px; /* Increased padding for consistency with ManageTeam.css */
+  background-color: #f4f4f4; /* Added from ManageTeam.css */
+  margin-left: 260px; /* Push content away from the fixed sidebar */
+  box-sizing: border-box; /* Include padding in element's total width and height */
 }
 
-/* Header styling */
+/* Header styling (copied from ManageTeam.css for consistency) */
 .header {
   display: flex;
   justify-content: space-between;
@@ -27,7 +26,7 @@
 }
 
 .header h1 {
-  font-family: "Inter", sans-serif;
+  font-family: "Inter", sans-serif; /* Assuming Inter font is available or will be imported */
   font-size: 24px;
   font-weight: 600;
   color: #333;
@@ -48,12 +47,12 @@
   display: inline-block;
 }
 
-/* Table container styling */
+/* Table container styling (copied from ManageTeam.css) */
 .table-content {
   overflow-x: auto;
 }
 
-/* Table styling */
+/* Table styling (adapted from ManageTeam.css) */
 .attendance-table {
   width: 100%;
   border-collapse: collapse;
@@ -63,9 +62,9 @@
   overflow: hidden;
 }
 
-/* Table header styling */
+/* Table header styling (adapted from ManageTeam.css) */
 .attendance-table thead {
-  background-color: deepskyblue; /* Bootstrap primary blue */
+  background-color:deepskyblue;  /* Bootstrap primary blue */
   color: #fff;
 }
 
@@ -76,10 +75,10 @@
   font-weight: 600;
 }
 
-/* Table body styling */
+/* Table body styling (adapted from ManageTeam.css) */
 .attendance-table tbody tr {
   border-bottom: 1px solid #ddd;
-  transition: background-color 0.3s;
+  transition:0.3s;
 }
 
 .attendance-table tbody tr:hover {
@@ -92,315 +91,193 @@
   color: #333;
 }
 
-/* Responsive adjustments */
-@media(max-width: 768px) {
-  .att-main-content {
-    padding: 20px;
-  }
-  .header h1 {
-    font-size: 20px;
-  }
+/* Styles for the actions cell to make buttons side-by-side */
+.actions-cell {
+  display: flex;
+  gap: 5px; /* Space between buttons */
+  justify-content: flex-start; /* Align to the left */
+  align-items: center;
 }
 
-/* Icon base styles */
-.icon {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  line-height: 24px;
-  text-align: center;
-  border-radius: 50%;
-  font-size: 16px;
+/* Styles for the icon buttons (adapted from ManageTeam.css .icon) */
+.icon-button {
+  display: inline-flex; /* Use inline-flex for better alignment */
+  align-items: center; /* Center icon vertically */
+  justify-content: center; /* Center icon horizontally */
+  width: 30px; /* Small size */
+  height: 30px; /* Small size */
+  border-radius: 50%; /* Sphere shape */
+  font-size: 16px; /* Adjust icon size */
   cursor: pointer;
-  margin: 0 5px;
+  margin: 0 2px; /* Smaller margin for tighter packing */
   transition: all 0.3s ease;
   user-select: none;
+  border: none; /* Remove default button border */
+  background-color: transparent; /* Default transparent background */
+  color: #333; /* Default text color */
 }
 
-/* Delete icon (trash can) */
-.icon-delete {
-  background-color: #ffe6e6;
-  color: #d32f2f; /* Red for delete */
-}
-
-.icon-delete::before {
-  content: "\1F5D1"; /* Unicode for trash can 🗑️ */
-}
-
-.icon-delete:hover {
-  background-color: #d32f2f;
-  color: #fff;
-  transform: scale(1.1);
-}
-
-/* Edit icon (pencil) */
-.icon-edit {
+/* Specific icon button colors and hover effects */
+.icon-button[title="Edit"] {
   background-color: #e6f3ff;
   color: #1976d3; /* Blue for edit */
 }
 
-.icon-edit::before {
-  content: "\270E"; /* Unicode for pencil ✏️ */
-}
-
-.icon-edit:hover {
+.icon-button[title="Edit"]:hover {
   background-color: #1976d3;
   color: #fff;
   transform: scale(1.1);
 }
 
-.icon-attnd {
-  background-color: #e6f3ff;
-  color: #1976d3; /* Blue for edit */
+.icon-button[title="Delete"] {
+  background-color: #ffe6e6;
+  color: #d32f2f; /* Red for delete */
 }
 
-.icon-attnd::before {
-  content: "\2705"; /* Unicode for checkmark button ✅ */
-}
-
-.icon-attnd:hover {
-  background-color: greenyellow;
+.icon-button[title="Delete"]:hover {
+  background-color: #d32f2f;
   color: #fff;
   transform: scale(1.1);
 }
 
-/* Accessibility for icons */
-.icon[aria-label]:hover::after {
-  content: attr(aria-label);
-  position: absolute;
-  background: #333;
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 4px;
-  font-size: 12px;
-  margin-left: 10px;
-  z-index: 10;
+.icon-button[title="Participants"] {
+  background-color: #e0ffe0; /* Light green */
+  color: #388e3c; /* Green */
 }
 
-/* Overlay styling */
-.overlay {
+.icon-button[title="Participants"]:hover {
+  background-color: #388e3c;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.icon-button[title*="Attendance"] { /* Matches both "Mark Attendance" and "Attendance Closed" */
+  background-color: #fff3e0; /* Light orange */
+  color: #f57c00; /* Orange */
+}
+
+.icon-button[title*="Attendance"]:hover:not(:disabled) {
+  background-color: #f57c00;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.icon-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #f5f5f5 !important;
+  color: #999 !important;
+  transform: none !important; /* Prevent scale on disabled hover */
+}
+
+/* Custom scrollbar for sidebar (copied from Sidebar.css for consistency) */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #334155;
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #64748b;
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Ensure sidebar content doesn't get cut off */
+.sidebar {
+  scrollbar-width: thin;
+  scrollbar-color: #64748b #334155;
+}
+
+/* Responsive adjustments (copied from ManageTeam.css) */
+@media(max-width: 768px) {
+  .att-main-content {
+    padding: 20px;
+    margin-left: 0; /* Remove margin-left on small screens */
+  }
+  .header h1 {
+    font-size: 20px;
+  }
+  .container {
+    flex-direction: column; /* Stack sidebar and content on small screens */
+  }
+  .sidebar {
+    position: relative; /* Make sidebar flow with content on small screens */
+    width: 100%;
+    height: auto;
+    border-radius: 0;
+  }
+}
+
+.loading-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
-}
-
-.overlay-content {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 95%;
-  width: 1000px;
-  max-height: calc(100vh - 40px);
-  overflow-y: auto;
-  overflow-x: hidden;
-  box-sizing: border-box;
-  margin: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.overlay-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-
-.overlay-header p {
-  margin: 0;
-  font-size: 16px;
-  flex: 1;
-  min-width: 120px;
-}
-
-.overlay-header .close-button, .overlay-header .new-mem-button {
-  flex-shrink: 0;
-  padding: 8px 16px;
-  font-size: 16px;
-}
-
-.overlay-table {
-  width: 100%;
-  overflow-x: hidden;
-}
-
-.overlay-table .attendance-table {
-  margin-top: 20px;
-  width: 100%;
-  table-layout: fixed;
-}
-
-.close-button, .new-mem-button, .confirm-button, .reject-button, .submit-button {
-  background-color: #007bff;
+  z-index: 9999;
   color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  padding: 10px 20px;
-  margin: 5px;
+  font-size: 2rem;
 }
 
-.close-button:hover, .new-mem-button:hover, .confirm-button:hover, .reject-button:hover, .submit-button:hover {
-  background-color: #0056b3;
+.loading-spinner {
+  border: 8px solid #f3f3f3; /* Light grey */
+  border-top: 8px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+  margin: auto;
 }
 
-/* New member form styling */
-.new-member-form {
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-spinner-small {
+  border: 2px solid #f3f3f3; /* Light grey */
+  border-top: 2px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+/* Loading effect styling to match Workshops.jsx */
+.loading {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.form-group label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
-}
-
-.form-group input {
-  padding: 8px;
-  font-size: 14px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.form-actions {
-  display: flex;
-  gap: 10px;
+  align-items: center;
   justify-content: center;
+  min-height: 100vh; /* Full viewport height to center vertically */
+  background: #f0f4f8; /* Match Workshops.css background */
+  font-family: 'Poppins', Arial, sans-serif; /* Match Workshops.css font with fallback */
+  color: #3f51b5; /* Match Workshops.css header color for consistency */
+  font-size: 1.5rem; /* Slightly larger text for visibility */
+  margin-left: 260px; /* Match Workshops.css margin-left for sidebar */
+  position: fixed; /* Ensure it covers the content area */
+  top: 0;
+  left: 0;
+  width: calc(100% - 260px); /* Adjust width to account for sidebar */
+  z-index: 1000; /* Ensure it appears above other content */
 }
 
-/* Container for Submit and Close buttons */
-.form-footer-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
-
-.confirm-button {
-  background-color: #28a745;
-}
-
-.confirm-button:hover {
-  background-color: #218838;
-}
-
-.reject-button {
-  background-color: #dc3545;
-}
-
-.reject-button:hover {
-  background-color: #c82333;
-}
-
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-  .overlay-content {
-    width: calc(100% - 20px);
-    max-width: 90%;
-  }
-
-  .attendance-table th,
-  .attendance-table td {
-    padding: 6px;
-    font-size: 14px;
-  }
-
-  .icon::before {
-    font-size: 14px;
-  }
-
-  .overlay-header {
-    gap: 10px;
-  }
-
-  .overlay-header p {
-    font-size: 14px;
-    min-width: 100px;
-  }
-
-  .overlay-header .close-button, .overlay-header .new-mem-button {
-    padding: 6px 12px;
-    font-size: 13px;
-  }
-
-  .form-group label {
-    font-size: 13px;
-  }
-
-  .form-group input {
-    font-size: 13px;
-    padding: 6px;
-  }
-
-  .form-footer-actions {
-    gap: 8px;
-  }
-}
-
-@media (max-width: 480px) {
-  .overlay-content {
-    padding: 15px;
-    margin: 10px;
-  }
-
-  .overlay-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-  }
-
-  .overlay-header p {
-    font-size: 13px;
-    min-width: 0;
-  }
-
-  .overlay-header .close-button, .overlay-header .new-mem-button {
-    padding: 6px 12px;
-    font-size: 12px;
-  }
-
-  .attendance-table th,
-  .attendance-table td {
-    padding: 4px;
-    font-size: 12px;
-  }
-
-  .form-group label {
-    font-size: 12px;
-  }
-
-  .form-group input {
-    font-size: 12px;
-    padding: 4px;
-  }
-
-  .form-actions, .form-footer-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .close-button, .new-mem-button, .confirm-button, .reject-button, .submit-button {
-    width: 100%;
-    margin: 5px 0;
+/* Responsive adjustments for loading on smaller screens */
+@media (max-width: 768px) {
+  .loading {
+    margin-left: 0; /* Remove margin-left on small screens to match sidebar behavior */
+    width: 100%; /* Full width on small screens */
   }
 }

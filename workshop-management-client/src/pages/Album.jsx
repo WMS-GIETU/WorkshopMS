@@ -10,6 +10,7 @@ const Album = () => {
   const [selectedWorkshop, setSelectedWorkshop] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
   const [availableWorkshops, setAvailableWorkshops] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchWorkshops = async () => {
@@ -27,6 +28,8 @@ const Album = () => {
       } catch (error) {
         console.error('Error fetching workshops:', error);
         alert('Failed to load workshops.');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -67,6 +70,8 @@ const Album = () => {
     } catch (error) {
       console.error('Error fetching images:', error);
       alert('Failed to load images.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -135,6 +140,15 @@ const Album = () => {
       }
     }
   };
+
+  if (loading) {
+    return (
+      <div className="container">
+        <Sidebar />
+        <div className="loading">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <>

@@ -69,32 +69,6 @@ const Home = () => {
     alert(`Workshop Name : ${w_name}\nDescription : ${desc}`);
   };
 
-  if (loading) {
-    return (
-      <div className="home-container1 main-with-header-footer">
-        <Header />
-        <div className="home-header">
-          <h1>Upcoming Workshops</h1>
-        </div>
-        <div className="loading-message">Loading workshops...</div>
-        <Footer />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="home-container1 main-with-header-footer">
-        <Header />
-        <div className="home-header">
-          <h1>Upcoming Workshops</h1>
-        </div>
-        <div className="error-message">{error}</div>
-        <Footer />
-      </div>
-    );
-  }
-
   return (
     <>
       <Header />

@@ -131,21 +131,6 @@
   background-color: #5a6268;
 }
 
-.loading, .error, .status-message {
-  text-align: center;
-  padding: 20px;
-  font-size: 18px;
-  font-weight: 500;
-}
-
-.loading {
-  color: #3f51b5;
-}
-
-.error {
-  color: #f44336;
-}
-
 .status-message {
   color: #333;
   background-color: #e8f5e8;

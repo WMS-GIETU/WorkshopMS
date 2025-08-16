@@ -5,10 +5,11 @@ import EditUserModal from '../components/EditUserModal';
 import './ManageTeam.css';
 
 const ManageTeam = () => {
-  const { isAdmin, user, token, isAuthenticated } = useAuth();
+  const { isAdmin, user, token, isAuthenticated, loading: authLoading } = useAuth();
   const [team, setTeam] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
+  const [teamLoading, setTeamLoading] = useState(true);
 
   const fetchTeam = useCallback(async () => {
     try {
@@ -27,16 +28,21 @@ const ManageTeam = () => {
       }
     } catch (error) {
       console.error('Failed to fetch team members:', error);
+    } finally {
+      setTeamLoading(false);
     }
   }, [token]);
 
-  
-
   useEffect(() => {
-    if (isAuthenticated() && token) {
-      fetchTeam();
+    if (!authLoading) {
+      if (isAuthenticated() && token) {
+        setTeamLoading(true);
+        fetchTeam();
+      } else {
+        setTeamLoading(false);
+      }
     }
-  }, [isAuthenticated, token, fetchTeam]);
+  }, [authLoading, isAuthenticated, token, fetchTeam]);
 
   const handleEdit = (userToEdit) => {
     if (isAdmin()) {
@@ -109,10 +115,19 @@ const ManageTeam = () => {
     }
   };
 
+  if (authLoading || teamLoading) {
+    return (
+      <div className="container">
+        <Sidebar />
+        <div className="loading">Loading...</div>
+      </div>
+    );
+  }
+
   return (
-    <div className='container'>
+    <div className="container">
       <Sidebar />
-      <div className='mt-main-content'>
+      <div className="mt-main-content">
         <div className='header'>
           <h1>Team Management</h1>
           <div className='user-info'>
@@ -121,7 +136,7 @@ const ManageTeam = () => {
             </span>
           </div>
         </div>
-        <div className="table-content">
+        <div className="mt-table-content">
           <table className="mt-table">
             <thead>
               <tr>

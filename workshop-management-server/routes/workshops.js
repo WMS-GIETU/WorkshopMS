@@ -115,6 +115,61 @@ router.get('/public', async (req, res) => {
   }
 });
 
+// New route to get a single workshop by ID
+router.get('/:workshopId', authMiddleware, async (req, res) => {
+  try {
+    const { workshopId } = req.params;
+    const workshop = await Workshop.findById(workshopId).populate('image');
+    if (!workshop) {
+      return res.status(404).json({ message: 'Workshop not found' });
+    }
+    res.json(workshop);
+  } catch (error) {
+    console.error('Get single workshop error:', error);
+    res.status(500).json({ message: 'Failed to get workshop' });
+  }
+});
+
+router.put('/:workshopId', authMiddleware, async (req, res) => {
+  try {
+    const { workshopId } = req.params;
+    const { name, date, time, location, topic, description, maxParticipants, clubCode } = req.body;
+    const { roles, clubCode: userClubCode } = req.user;
+
+    if (!roles.includes('admin')) {
+      return res.status(403).json({ message: 'Only admins can update workshops' });
+    }
+
+    const workshop = await Workshop.findById(workshopId);
+
+    if (!workshop) {
+      return res.status(404).json({ message: 'Workshop not found' });
+    }
+
+    // Ensure the admin can only update workshops from their own club
+    if (workshop.clubCode !== userClubCode) {
+      return res.status(403).json({ message: 'You can only update workshops from your own club' });
+    }
+
+    // Update workshop fields
+    workshop.name = name || workshop.name;
+    workshop.date = date || workshop.date;
+    workshop.time = time || workshop.time;
+    workshop.location = location || workshop.location;
+    workshop.topic = topic || workshop.topic;
+    workshop.description = description || workshop.description;
+    workshop.maxParticipants = maxParticipants !== undefined ? maxParticipants : workshop.maxParticipants;
+    workshop.clubCode = clubCode || workshop.clubCode;
+
+    await workshop.save();
+
+    res.json({ message: 'Workshop updated successfully', workshop });
+  } catch (error) {
+    console.error('Update workshop error:', error);
+    res.status(500).json({ message: 'Failed to update workshop' });
+  }
+});
+
 router.delete('/:workshopId', authMiddleware, async (req, res) => {
   try {
     const { workshopId } = req.params;

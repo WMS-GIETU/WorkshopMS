@@ -90,28 +90,6 @@ const ApproveRequest = () => {
       setProcessing(false);
     }
   };
-
-  if (loading) {
-    return (
-      <div className="approve-container">
-        <div className="approve-card">
-          <div className="loading">Loading request details...</div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="approve-container">
-        <div className="approve-card">
-          <div className="error">❌ {error}</div>
-          <button onClick={() => navigate('/')} className="back-btn">Go Back</button>
-        </div>
-      </div>
-    );
-  }
-
   if (!request) {
     return (
       <div className="approve-container">

@@ -8,12 +8,13 @@
   overflow-x: hidden;
 }
 
-/* Sidebar styling - assuming existing Sidebar component styles */
+/* Main content styling */
 .mt-main-content {
   flex: 1;
   padding: 30px;
   background-color: #f4f4f4;
   margin-left: 260px;
+  box-sizing: border-box; /* Include padding in element's total width and height */
 }
 
 /* Header styling */
@@ -22,7 +23,6 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  flex-wrap: wrap;
   gap: 15px;
 }
 
@@ -65,7 +65,7 @@
 
 /* Table header styling */
 .mt-table thead {
-  background-color:deepskyblue;  /* Bootstrap primary blue */
+  background-color: deepskyblue; /* Bootstrap primary blue */
   color: #fff;
 }
 
@@ -167,11 +167,6 @@
 
 /* Responsive design for header */
 @media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    text-align: center;
-  }
-  
   .user-info {
     text-align: center;
   }
@@ -191,11 +186,48 @@
 }
 
 /* Responsive adjustments */
-@media(max-width: 768px) {
+@media (max-width: 768px) {
   .mt-main-content {
     padding: 20px;
+    margin-left: 0; /* Remove margin-left on small screens */
   }
   .header h1 {
     font-size: 20px;
+  }
+  .container {
+    flex-direction: column; /* Stack sidebar and content on small screens */
+  }
+  .sidebar {
+    position: relative; /* Make sidebar flow with content on small screens */
+    width: 100%;
+    height: auto;
+    border-radius: 0;
+  }
+}
+
+/* Loading effect styling to match Attendance.jsx */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Full viewport height to center vertically */
+  background: #f4f4f8; /* Match Attendance.css background */
+  font-family: 'Poppins', Arial, sans-serif; /* Match Attendance.css font with fallback */
+  color: #3f51b5; /* Match Attendance.css header color for consistency */
+  font-size: 1.5rem; /* Slightly larger text for visibility */
+  margin-left: 260px; /* Match Attendance.css margin-left for sidebar */
+  position: fixed; /* Ensure it covers the content area */
+  top: 0;
+  left: 0;
+  width: calc(100% - 260px); /* Adjust width to account for sidebar */
+  z-index: 1000; /* Ensure it appears above other content */
+}
+
+/* Responsive adjustments for loading on smaller screens */
+@media (max-width: 768px) {
+  .loading {
+    margin-left: 0; /* Remove margin-left on small screens to match sidebar behavior */
+    width: 100%; /* Full width on small screens */
   }
 }
