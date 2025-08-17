@@ -15,6 +15,7 @@ import WorkshopRequests from './pages/WorkshopRequests';
 import ApproveRequest from './pages/ApproveRequest';
 import RejectRequest from './pages/RejectRequest';
 import Workshops from './pages/Workshops'; // New: Import Workshops component
+import About from './pages/About';
 import RequestWorkshop from './pages/RequestWorkshop';
 import PrivateRoute from './components/PrivateRoute';
 
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="/approve-request/:requestId" element={<ApproveRequest />} />
           <Route path="/reject-request/:requestId" element={<RejectRequest />} />
           <Route path="/workshops" element={<Workshops />} /> {/* New: Route for listing workshops */}
+          <Route path="/about" element={<About />} />
         </Routes>
       </Router>
     </AuthProvider>

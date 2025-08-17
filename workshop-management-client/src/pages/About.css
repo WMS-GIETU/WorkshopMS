@@ -1,0 +1,115 @@
+/* About.css */
+.about-container {
+  padding: 0 40px 40px 40px; /* top, right, bottom, left */
+  margin-top: 80px; /* Push content down from fixed header */
+  font-family: 'Poppins', sans-serif;
+  background: #f0f4f8;
+  min-height: calc(100vh - 140px); /* Account for header (80px) and footer (60px) */
+  box-sizing: border-box; /* Ensure padding doesn't increase size */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.about-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.about-header h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #3f51b5;
+  letter-spacing: 1px;
+  margin: 0;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #3f51b5;
+  text-transform: uppercase;
+}
+
+.project-synopsis {
+  background-color: #ffffff;
+  border: 1px solid #dcdcdc;
+  border-left: 5px solid #3f51b5;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+}
+
+.project-synopsis h2,
+.developers-section h2,
+.supervisor-section h2 {
+  color: #3f51b5;
+  margin-top: 0;
+}
+
+.project-synopsis h3 {
+  color: #3f51b5;
+  margin-top: 20px;
+}
+
+.project-synopsis p,
+.project-synopsis ul {
+  color: #555;
+  line-height: 1.6;
+}
+
+.project-synopsis ul li,
+.developers-section ul li,
+.supervisor-section ul li {
+  margin-left: 25px; /* Adjust as needed for desired indentation */
+}
+
+.project-synopsis table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.project-synopsis table th,
+.project-synopsis table td {
+  border: 1px solid #dcdcdc;
+  padding: 10px;
+  text-align: left;
+}
+
+.project-synopsis table th {
+  background-color: #f0f4f8;
+  color: #3f51b5;
+}
+
+.developers-section,
+.supervisor-section {
+  background-color: #ffffff;
+  border: 1px solid #dcdcdc;
+  border-left: 5px solid #3f51b5;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+}
+
+.developers-section table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.developers-section table th,
+.developers-section table td {
+  border: 1px solid #dcdcdc;
+  padding: 10px;
+  text-align: left;
+}
+
+.developers-section table th {
+  background-color: #f0f4f8;
+  color: #3f51b5;
+}
+
+.developers-section p,
+.supervisor-section p {
+  color: #555;
+  line-height: 1.6;
+}

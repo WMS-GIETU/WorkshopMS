@@ -37,6 +37,10 @@
   position: relative;
 }
 
+.about-link-wrapper {
+  position: relative;
+}
+
 .login-btn {
   background-color: white;
   color: #3f51b5;

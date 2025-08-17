@@ -1,14 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './HeaderFooter.css';
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const handleAboutClick = () => {
+    navigate('/about');
+  };
+
   return (
     <header className="header-main">
       <div className="header-left">
         <Link to="/" className="logo">WorkshopMS</Link>
       </div>
       <div className="header-right">
+        <div className="about-link-wrapper">
+          <button className="login-btn" onClick={handleAboutClick}>About</button>
+        </div>
         <div className="login-dropdown">
           <button className="login-btn">Login/Register ⮟</button>
           <div className="login-options">
