@@ -87,3 +87,77 @@
   color: #555;
   margin-top: 10px;
 }
+
+/* Loading Spinner Styles */
+.loading-spinner-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50vh; /* Adjust as needed */
+}
+
+.loading-spinner {
+  border: 8px solid #f3f3f3; /* Light grey */
+  border-top: 8px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-spinner-container p {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #555;
+}
+
+/* Error Message Styles */
+.error-message {
+  text-align: center;
+  padding: 40px;
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #c62828;
+  border-radius: 8px;
+}
+
+/* Album Section Styles */
+.album-section {
+  margin-top: 2rem;
+}
+
+.album-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.album-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.album-image-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 300px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.album-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.album-image-info {
+  padding: 1rem;
+}

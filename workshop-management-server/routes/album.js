@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const AlbumImage = require('../models/AlbumImage');
+const Workshop = require('../models/Workshop');
 const authMiddleware = require('../middleware/authMiddleware');
 
 // Multer setup for file uploads
@@ -44,6 +45,35 @@ router.get('/', authMiddleware, async (req, res) => {
     }
     const images = await AlbumImage.find(filter).sort({ createdAt: -1 });
     res.json(images);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   GET /api/album/public
+// @desc    Get all album images for public view
+// @access  Public
+router.get('/public', async (req, res) => {
+  try {
+    const images = await AlbumImage.find().sort({ createdAt: -1 });
+    const workshops = await Workshop.find();
+
+    const imagesWithWorkshopDetails = images.map(image => {
+      const workshop = workshops.find(w => w.name === image.workshop);
+      return {
+        _id: image._id,
+        image: image.image,
+        caption: image.caption,
+        workshopDetails: workshop ? {
+          name: workshop.name,
+          clubCode: workshop.clubCode,
+          date: workshop.date,
+        } : null,
+      };
+    });
+
+    res.json(imagesWithWorkshopDetails);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
