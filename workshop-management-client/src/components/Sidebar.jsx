@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Sidebar.css';
@@ -6,6 +6,31 @@ import './Sidebar.css';
 const Sidebar = () => {
   const { logout, user, isAdmin } = useAuth();
   const navigate = useNavigate();
+  const [pendingRequestsCount, setPendingRequestsCount] = useState(0);
+
+  useEffect(() => {
+    if (isAdmin()) {
+      fetchPendingRequestsCount();
+    }
+  }, [isAdmin]);
+
+  const fetchPendingRequestsCount = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('/api/workshop-requests/stats', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setPendingRequestsCount(data.pending);
+      }
+    } catch (error) {
+      console.error('Error fetching pending requests count:', error);
+    }
+  };
 
   const getClubName = (clubCode) => {
     const clubNames = {
@@ -40,7 +65,11 @@ const Sidebar = () => {
         {isAdmin() ? (
           <>
             <li><Link to="/new-workshop">📌 New Workshop</Link></li>
-            <li><Link to="/workshop-requests">📝 Requests</Link></li>
+            <li><Link to="/workshop-requests">📝 Requests
+              {isAdmin() && pendingRequestsCount > 0 && (
+                <span className="pending-requests-badge">{pendingRequestsCount}</span>
+              )}
+            </Link></li>
           </>
         ) : (
           <li><Link to="/workshop-requests">📝 Request Workshop</Link></li>
