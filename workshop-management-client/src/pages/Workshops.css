@@ -115,33 +115,179 @@
   margin-top: 8px;
 }
 
-.delete-btn {
+.card-hover-actions {
   position: absolute;
   top: 12px;
   right: 12px;
-  background-color: #e53935;
-  color: white;
-  padding: 6px 10px;
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  z-index: 1;
+}
+
+.workshop-card:hover .card-hover-actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.edit-btn,
+.delete-btn,
+.register-btn {
+  padding: 8px 12px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-family: 'Poppins', sans-serif;
   font-weight: 500;
-  font-size: 12px;
-  opacity: 0;
-  transform: scale(0.8);
-  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1; /* Ensure button stays above content */
-  min-width: 60px; /* Prevent button from being too narrow */
+  font-size: 14px;
+  transition: background-color 0.2s, transform 0.2s;
 }
 
-.workshop-card:hover .delete-btn {
-  opacity: 1;
-  transform: scale(1);
+.edit-btn {
+  background-color: #2196f3; /* Blue */
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #1976d2;
+  transform: translateY(-1px);
+}
+
+.delete-btn {
+  background-color: #e53935; /* Red */
+  color: white;
 }
 
 .delete-btn:hover {
   background-color: #c62828;
-  transform: scale(1.05);
+  transform: translateY(-1px);
+}
+
+.register-btn {
+  background-color: #4caf50; /* Green */
+  color: white;
+}
+
+.register-btn:hover {
+  background-color: #388e3c;
+  transform: translateY(-1px);
+}
+
+.register-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh; /* Limit height for scrollability */
+  overflow-y: auto;
+  position: relative;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #3f51b5;
+  font-size: 24px;
+  text-align: center;
+}
+
+.modal-content .form-group {
+  margin-bottom: 15px;
+}
+
+.modal-content label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #555;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="date"],
+.modal-content input[type="time"],
+.modal-content input[type="number"],
+.modal-content textarea {
+  width: calc(100% - 20px); /* Account for padding */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.modal-content textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.modal-content button[type="submit"] {
+  background-color: #3f51b5;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  width: 100%;
+  margin-top: 20px;
+  transition: background-color 0.2s;
+}
+
+.modal-content button[type="submit"]:hover {
+  background-color: #303f9f;
+}
+
+.modal-content button[type="submit"]:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Adjustments for card actions to accommodate new buttons */
+.workshop-card .card-actions {
+  position: static; /* Remove absolute positioning */
+  top: auto;
+  right: auto;
+  opacity: 1; /* Always visible */
+  transform: none; /* No scaling */
+  box-shadow: none;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.workshop-card:hover .card-actions .delete-btn {
+  opacity: 1;
+  transform: none;
 }

@@ -17,6 +17,7 @@ const NewWorkshop = () => {
     location: '',
     topic: '',
     description: '',
+    link: '',
     maxParticipants: '',
     clubCode: user?.clubCode || '',
     image: null
@@ -57,6 +58,7 @@ const NewWorkshop = () => {
               location: data.location || '',
               topic: data.topic || '',
               description: data.description || '',
+              link: data.link || '',
               maxParticipants: data.maxParticipants || '',
               clubCode: data.clubCode || user?.clubCode || '',
               image: null // Image file cannot be pre-filled, but existing image can be displayed
@@ -148,6 +150,7 @@ const NewWorkshop = () => {
           location: '',
           topic: '',
           description: '',
+          link: '',
           maxParticipants: '',
           clubCode: user?.clubCode || '',
           image: null
@@ -286,6 +289,17 @@ const NewWorkshop = () => {
                 onChange={handleChange}
                 placeholder="Enter workshop description"
                 rows="4"
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Link</label>
+              <input 
+                type="text" 
+                name="link"
+                value={formData.link}
+                onChange={handleChange}
+                placeholder="Enter workshop link"
               />
             </div>
 

@@ -111,6 +111,19 @@ const Home = () => {
                   <p><strong>Date:</strong> {new Date(w.date).toLocaleDateString('en-GB')}</p>
                   <p><strong>Location:</strong> {w.location}</p>
                   <p className="topic"><em>{w.topic}</em></p>
+                  <button
+                    className="enroll-button"
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent card click event from firing
+                      let url = w.link;
+                      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                        url = 'https://' + url;
+                      }
+                      window.open(url, '_blank');
+                    }}
+                  >
+                    Enroll Now
+                  </button>
                 </div>
               </div>
             ))}

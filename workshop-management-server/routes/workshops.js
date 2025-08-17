@@ -32,7 +32,7 @@ const upload = multer({
 
 router.post('/create', authMiddleware, upload.single('image'), async (req, res) => {
   try {
-    const { name, date, time, location, topic, description, maxParticipants, clubCode } = req.body;
+    const { name, date, time, location, topic, description, maxParticipants, clubCode, link } = req.body;
     const { userId, roles, clubCode: userClubCode } = req.user;
 
     if (!roles.includes('admin')) {
@@ -73,6 +73,7 @@ router.post('/create', authMiddleware, upload.single('image'), async (req, res) 
       location,
       topic,
       description,
+      link,
       maxParticipants,
       clubCode,
       image: workshopImageId, // Store the ID of the WorkshopImage
@@ -133,7 +134,7 @@ router.get('/:workshopId', authMiddleware, async (req, res) => {
 router.put('/:workshopId', authMiddleware, async (req, res) => {
   try {
     const { workshopId } = req.params;
-    const { name, date, time, location, topic, description, maxParticipants, clubCode } = req.body;
+    const { name, date, time, location, topic, description, link, maxParticipants, clubCode } = req.body;
     const { roles, clubCode: userClubCode } = req.user;
 
     if (!roles.includes('admin')) {
@@ -158,6 +159,7 @@ router.put('/:workshopId', authMiddleware, async (req, res) => {
     workshop.location = location || workshop.location;
     workshop.topic = topic || workshop.topic;
     workshop.description = description || workshop.description;
+    workshop.link = link || workshop.link;
     workshop.maxParticipants = maxParticipants !== undefined ? maxParticipants : workshop.maxParticipants;
     workshop.clubCode = clubCode || workshop.clubCode;
 

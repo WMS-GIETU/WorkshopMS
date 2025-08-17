@@ -36,7 +36,7 @@ const router = express.Router();
 // Submit workshop request (Club members only)
 router.post('/submit', authMiddleware, upload.single('image'), async (req, res) => {
   try {
-    const { workshopName, date, time, location, topic, description, maxParticipants } = req.body;
+    const { workshopName, date, time, location, topic, description, link, maxParticipants } = req.body;
     const { userId, username, roles, clubCode } = req.user;
 
     // Check if user is a club member
@@ -55,6 +55,7 @@ router.post('/submit', authMiddleware, upload.single('image'), async (req, res) 
       location,
       topic,
       description,
+      link,
       maxParticipants,
       image: req.file ? req.file.path : '' // Save image path
     });
@@ -150,6 +151,7 @@ router.put('/approve/:requestId', authMiddleware, async (req, res) => {
       location: request.location,
       topic: request.topic,
       description: request.description,
+      link: request.link,
       maxParticipants: request.maxParticipants,
       clubCode: request.clubCode,
       image: workshopImageId, // Use the ID of the WorkshopImage

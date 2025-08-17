@@ -8,6 +8,8 @@ const Workshops = () => {
   const [workshops, setWorkshops] = useState([]);
   const [loading, setLoading] = useState(true);
   const [registeredWorkshops, setRegisteredWorkshops] = useState(new Set());
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingWorkshop, setEditingWorkshop] = useState(null);
 
   // Helper function to convert buffer to base64 URL
   const getImageSrc = (imageData) => {
@@ -122,6 +124,43 @@ const Workshops = () => {
     }
   };
 
+  const handleEdit = (workshop) => {
+    setEditingWorkshop(workshop);
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdateWorkshop = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`/api/workshops/${editingWorkshop._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(editingWorkshop)
+      });
+
+      if (response.ok) {
+        alert('Workshop updated successfully!');
+        setIsEditModalOpen(false);
+        setEditingWorkshop(null);
+        fetchWorkshops();
+      } else {
+        const data = await response.json();
+        alert(data.message || 'Failed to update workshop.');
+      }
+    } catch (error) {
+      console.error('Error updating workshop:', error);
+      alert('An error occurred while updating the workshop.');
+    }
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+    setEditingWorkshop(null);
+  };
+
   if (loading) {
     return (
       <div className="home-container">
@@ -171,15 +210,26 @@ const Workshops = () => {
                   <p><strong>Max Participants:</strong> {workshop.maxParticipants}</p>
                 )}
                 <p><strong>Club Code:</strong> {workshop.clubCode}</p>
+                <div className="card-hover-actions">
+                  {isAdmin() && (
+                    <>
+                      <button 
+                        className="edit-btn"
+                        onClick={() => handleEdit(workshop)}
+                      >
+                        <i className="fas fa-edit"></i>
+                      </button>
+                      <button 
+                        className="delete-btn"
+                        onClick={() => handleDeleteWorkshop(workshop._id)}
+                      >
+                        <i className="fas fa-trash"></i>
+                      </button>
+                    </>
+                  )}
+                </div>
                 <div className="card-actions">
-                  {isAdmin ? (
-                    <button 
-                      className="delete-btn"
-                      onClick={() => handleDeleteWorkshop(workshop._id)}
-                    >
-                      Delete
-                    </button>
-                  ) : (
+                  {!isAdmin && (
                     <button 
                       className="register-btn"
                       onClick={() => handleRegister(workshop._id)}
@@ -192,6 +242,93 @@ const Workshops = () => {
               </div>
             );
           })}
+        </div>
+      )}
+
+      {isEditModalOpen && editingWorkshop && (
+        <div className="modal-overlay" onClick={closeEditModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h2>Edit Workshop</h2>
+            <form onSubmit={(e) => { e.preventDefault(); handleUpdateWorkshop(); }}>
+              <div className="form-group">
+                <label>Name:</label>
+                <input
+                  type="text"
+                  value={editingWorkshop.name}
+                  onChange={(e) => setEditingWorkshop({ ...editingWorkshop, name: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Topic:</label>
+                <input
+                  type="text"
+                  value={editingWorkshop.topic}
+                  onChange={(e) => setEditingWorkshop({ ...editingWorkshop, topic: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Date:</label>
+                <input
+                  type="date"
+                  value={editingWorkshop.date ? new Date(editingWorkshop.date).toISOString().split('T')[0] : ''}
+                  onChange={(e) => setEditingWorkshop({ ...editingWorkshop, date: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Time:</label>
+                <input
+                  type="time"
+                  value={editingWorkshop.time}
+                  onChange={(e) => setEditingWorkshop({ ...editingWorkshop, time: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Location:</label>
+                <input
+                  type="text"
+                  value={editingWorkshop.location}
+                  onChange={(e) => setEditingWorkshop({ ...editingWorkshop, location: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Description:</label>
+                <textarea
+                  value={editingWorkshop.description || ''}
+                  onChange={(e) => setEditingWorkshop({ ...editingWorkshop, description: e.target.value })}
+                ></textarea>
+              </div>
+              <div className="form-group">
+                <label>Link:</label>
+                <input
+                  type="text"
+                  value={editingWorkshop.link || ''}
+                  onChange={(e) => setEditingWorkshop({ ...editingWorkshop, link: e.target.value })}
+                />
+              </div>
+              <div className="form-group">
+                <label>Max Participants:</label>
+                <input
+                  type="number"
+                  value={editingWorkshop.maxParticipants || ''}
+                  onChange={(e) => setEditingWorkshop({ ...editingWorkshop, maxParticipants: parseInt(e.target.value) || 0 })}
+                />
+              </div>
+              <div className="form-group">
+                <label>Club Code:</label>
+                <input
+                  type="text"
+                  value={editingWorkshop.clubCode || ''}
+                  readOnly
+                />
+              </div>
+              <button type="submit">Save Changes</button>
+            </form>
+          </div>
         </div>
       )}
     </div>

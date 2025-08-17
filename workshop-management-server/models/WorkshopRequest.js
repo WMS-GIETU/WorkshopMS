@@ -42,6 +42,10 @@ const WorkshopRequestSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  link: {
+    type: String,
+    default: ''
+  },
   maxParticipants: {
     type: Number,
     default: 0

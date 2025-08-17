@@ -14,6 +14,7 @@ const RequestWorkshop = () => {
     location: '',
     topic: '',
     description: '',
+    link: '',
     maxParticipants: ''
   });
   const [imageFile, setImageFile] = useState(null); // New state for image file
@@ -75,6 +76,7 @@ const RequestWorkshop = () => {
           location: '',
           topic: '',
           description: '',
+          link: '',
           maxParticipants: ''
         });
         setImageFile(null); // Clear image file state
@@ -183,6 +185,18 @@ const RequestWorkshop = () => {
             onChange={handleChange}
             placeholder="Enter workshop description"
             rows="4"
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="link">Link</label>
+          <input
+            type="text"
+            id="link"
+            name="link"
+            value={formData.link}
+            onChange={handleChange}
+            placeholder="Enter workshop link"
           />
         </div>
 
