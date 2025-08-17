@@ -153,6 +153,7 @@ const About = () => {
                 <th>Roll No</th>
                 <th>Regd No</th>
                 <th>Name of the Student</th>
+                <th>Contact Number</th>
               </tr>
             </thead>
             <tbody>
@@ -160,16 +161,19 @@ const About = () => {
                 <td>23CSE094</td>
                 <td>23UG010179</td>
                 <td>Moningi Vinay Kumar</td>
+                <td>+91 8280528986</td>
               </tr>
               <tr>
                 <td>23CSE051</td>
                 <td>23UG010136</td>
                 <td>Soumyaranjan Rath</td>
+                <td>+91 76098 65480</td>
               </tr>
               <tr>
                 <td>23CSE046</td>
                 <td>23UG010131</td>
                 <td>Anamu Yashwant</td>
+                <td>+91 99374 44730</td>
               </tr>
             </tbody>
           </table>
@@ -178,7 +182,7 @@ const About = () => {
         <section className="supervisor-section">
           <h2>Supervision</h2>
           <p>
-            <strong>Group No:</strong> (Not specified)<br />
+            <strong>Group No:</strong>B08<br />
             <strong>Name of the Supervisor:</strong> Mr. Santosh Kumar Panda<br />
             <strong>Name of the Class Teacher:</strong> Mr. Tirupati Sahu
           </p>
