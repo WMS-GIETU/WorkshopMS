@@ -1,5 +1,4 @@
 .home-container1 {
-  padding: 40px 40px 40px 40px; /* top, right, bottom, left */
   font-family: 'Poppins', sans-serif;
   background: #f0f4f8;
   min-height: calc(100vh - 140px); /* Account for header (80px) and footer (60px) */
@@ -187,4 +186,10 @@
 
 .enroll-button:hover {
   background-color: #45a049;
+}
+
+.content-wrapper {
+  max-width: 1200px; /* Or a suitable max-width for your content */
+  margin: 0 auto; /* Center the content wrapper */
+  padding: 0 20px; /* Add horizontal padding to the content */
 }

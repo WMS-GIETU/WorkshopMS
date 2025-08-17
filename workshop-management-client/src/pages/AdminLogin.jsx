@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 const AdminLogin = () => {
   const [adminId, setAdminId] = useState('');
@@ -58,49 +60,48 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="login-container">
-      <form className="login-form" onSubmit={handleLogin}>
-        <h2>Admin Login</h2>
-
-        <div className="form-group">
-          <label>Admin ID:</label>
-          <input
-            type="text"
-            name="adminId"
-            placeholder="Enter Admin ID"
-            value={adminId}
-            onChange={(e) => setAdminId(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Password:</label>
-          <input
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Club Code:</label>
-          <input
-            type="text"
-            name="clubCode"
-            placeholder="Enter Club's Unique Code"
-            value={clubCode}
-            onChange={(e) => setClubCode(e.target.value)}
-            required
-          />
-        </div>
-
-        <button type="submit">Login</button>
-        
-      </form>
-    </div>
+    <>
+      <Header />
+      <div className="login-container main-with-header-footer">
+        <form className="login-form" onSubmit={handleLogin}>
+          <h2>Admin Login</h2>
+          <div className="form-group">
+            <label>Admin ID:</label>
+            <input
+              type="text"
+              name="adminId"
+              placeholder="Enter Admin ID"
+              value={adminId}
+              onChange={(e) => setAdminId(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Password:</label>
+            <input
+              type="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Club Code:</label>
+            <input
+              type="text"
+              name="clubCode"
+              placeholder="Enter Club's Unique Code"
+              value={clubCode}
+              onChange={(e) => setClubCode(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit">Login</button>
+        </form>
+      </div>
+      <Footer />
+    </>
   );
 };
 

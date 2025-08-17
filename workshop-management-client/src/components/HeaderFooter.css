@@ -9,7 +9,7 @@
   z-index: 1000;
   background-color: #3f51b5;
   color: white;
-  padding: 14px 32px;
+  padding: 10px 32px; /* Reduced vertical padding */
   font-family: 'Poppins', sans-serif;
   display: flex;
   justify-content: space-between;
@@ -21,7 +21,7 @@
 .logo {
   color: white;
   text-decoration: none;
-  font-size: 22px;
+  font-size: 18px; /* Reduced font size */
   font-weight: 600;
 }
 
@@ -44,9 +44,10 @@
 .login-btn {
   background-color: white;
   color: #3f51b5;
-  padding: 8px 14px;
+  padding: 6px 12px; /* Reduced padding */
   border: none;
   font-weight: 600;
+  font-size: 14px; /* Added smaller font size */
   border-radius: 6px;
   cursor: pointer;
 }
@@ -55,7 +56,7 @@
   display: none;
   flex-direction: column;
   position: absolute;
-  top: 40px;
+  top: 36px; /* Adjusted for smaller button height */
   right: 0;
   background-color: white;
   border: 1px solid #ddd;
@@ -82,9 +83,9 @@
 
 /* ===== PADDING FOR FIXED HEADER AND FOOTER ===== */
 .main-with-header-footer {
-  padding-top: 80px; /* Match header height (14px padding * 2 + ~44px content) */
-  padding-bottom: 60px; /* Match footer height (16px padding * 2 + ~28px content) */
-  min-height: calc(100vh - 140px); /* Ensure content fills viewport minus header and footer */
+  padding-top: 72px; /* Adjusted for reduced header height (10px * 2 + ~32px content) */
+  padding-bottom: 60px; /* Unchanged, matches footer height */
+  min-height: calc(100vh - 132px); /* Adjusted for new header (52px) + footer (60px) */
   box-sizing: border-box; /* Ensure padding doesn't increase element size */
 }
 

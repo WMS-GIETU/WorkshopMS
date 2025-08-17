@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 import './Login.css';
 
 const ClubmemLogin = () => {
@@ -51,48 +53,52 @@ const ClubmemLogin = () => {
   };
 
   return (
-    <div className="login-container">
-      <form className="login-form" onSubmit={handleLogin}>
-        <h2>Club Member Login</h2>
-        <div className="form-group">
-          <label>Student Roll no. :</label>
-          <input 
-            type="text" 
-            name="rollNumber" 
-            placeholder="Enter Roll Number" 
-            value={rollNumber}
-            onChange={(e) => setRollNumber(e.target.value)}
-            required 
-          />
-        </div>
-        <div className="form-group">
-          <label>Password:</label>
-          <input 
-            type="password" 
-            placeholder="Enter password" 
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required 
-          />
-        </div>
-        <div className="form-group">
-          <label>Club Code:</label>
-          <input 
-            type="text" 
-            name="clubCode" 
-            placeholder="Enter Club's Unique Code" 
-            value={clubCode}
-            onChange={(e) => setClubCode(e.target.value)}
-            required 
-          />
-        </div>
-        <button type="submit">Login</button>
-        
-        <div className="register-link">
-          Don't have an account? <span onClick={() => navigate('/register')}>Register here</span>
-        </div>
-      </form>
-    </div>
+    <>
+      <Header />
+      <div className="login-container main-with-header-footer">
+        <form className="login-form" onSubmit={handleLogin}>
+          <h2>Club Member Login</h2>
+          <div className="form-group">
+            <label>Student Roll no. :</label>
+            <input 
+              type="text" 
+              name="rollNumber" 
+              placeholder="Enter Roll Number" 
+              value={rollNumber}
+              onChange={(e) => setRollNumber(e.target.value)}
+              required 
+            />
+          </div>
+          <div className="form-group">
+            <label>Password:</label>
+            <input 
+              type="password" 
+              placeholder="Enter password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required 
+            />
+          </div>
+          <div className="form-group">
+            <label>Club Code:</label>
+            <input 
+              type="text" 
+              name="clubCode" 
+              placeholder="Enter Club's Unique Code" 
+              value={clubCode}
+              onChange={(e) => setClubCode(e.target.value)}
+              required 
+            />
+          </div>
+          <button type="submit">Login</button>
+          
+          <div className="register-link">
+            Don't have an account? <span onClick={() => navigate('/register')}>Register here</span>
+          </div>
+        </form>
+      </div>
+      <Footer />
+    </>
   );
 };
 

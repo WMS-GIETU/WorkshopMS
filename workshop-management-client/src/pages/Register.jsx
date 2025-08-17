@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 import './Register.css';
 
 const Register = () => {
@@ -150,7 +152,7 @@ const Register = () => {
           ? '✅ Registration request submitted successfully! Your request has been sent to the system administrator for approval. You will receive an email notification once approved.'
           : '✅ Registration request submitted successfully! Your request has been sent to your club administrator for approval. You will receive an email notification once approved.';
         alert(roleMessage);
-        navigate('/admin-login');
+        navigate('/');
       } else {
         // Handle specific admin validation error
         if (data.message && data.message.includes('admin already exists')) {
@@ -170,127 +172,131 @@ const Register = () => {
   };
 
   return (
-    <div className="register-container">
-      <form className="register-form" onSubmit={handleSubmit}>
-        <h2>Submit Registration Request</h2>
+    <>
+      <Header />
+      <div className="register-container">
+        <form className="register-form" onSubmit={handleSubmit}>
+          <h2>Submit Registration Request</h2>
 
-        <div className="form-group">
-          <label>Username:</label>
-          <input
-            type="text"
-            name="username"
-            placeholder="Enter username"
-            value={formData.username}
-            onChange={handleChange}
-            className={errors.username ? 'error' : ''}
-          />
-          {errors.username && <span className="error-message">{errors.username}</span>}
-        </div>
-
-        <div className="form-group">
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="Enter email"
-            value={formData.email}
-            onChange={handleChange}
-            className={errors.email ? 'error' : ''}
-          />
-          {errors.email && <span className="error-message">{errors.email}</span>}
-        </div>
-
-        <div className="form-group">
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter password"
-            value={formData.password}
-            onChange={handleChange}
-            className={errors.password ? 'error' : ''}
-          />
-          {errors.password && <span className="error-message">{errors.password}</span>}
-        </div>
-
-        <div className="form-group">
-          <label>Confirm Password:</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            className={errors.confirmPassword ? 'error' : ''}
-          />
-          {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
-        </div>
-
-        <div className="form-group">
-          <label>Role:</label>
-          <select
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-          >
-            <option value="clubMember">Club Member</option>
-            <option value="admin">Admin (One per club only)</option>
-          </select>
-          {formData.role === 'admin' && (
-            <div className="role-info">
-              <span className="info-icon">ℹ️</span>
-              <span className="info-text">Only one admin is allowed per club. If an admin already exists, registration will be rejected.</span>
-            </div>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label>Club Code:</label>
-          <div className="club-code-container">
+          <div className="form-group">
+            <label>Username:</label>
             <input
               type="text"
-              name="clubCode"
-              placeholder="Enter Club's Unique Code"
-              value={formData.clubCode}
+              name="username"
+              placeholder="Enter username"
+              value={formData.username}
               onChange={handleChange}
-              className={errors.clubCode ? 'error' : ''}
+              className={errors.username ? 'error' : ''}
             />
-            <button 
-              type="button" 
-              className="check-admin-btn"
-              onClick={checkAdminExists}
-              disabled={isCheckingAdmin || !formData.clubCode.trim()}
-            >
-              {isCheckingAdmin ? 'Checking...' : 'Check Admin'}
-            </button>
+            {errors.username && <span className="error-message">{errors.username}</span>}
           </div>
-          {errors.clubCode && <span className="error-message">{errors.clubCode}</span>}
-          
-          {adminCheckResult && (
-            <div className={`admin-check-result ${adminCheckResult.exists ? 'exists' : 'not-exists'}`}>
-              <span className="result-icon">
-                {adminCheckResult.exists ? '❌' : '✅'}
-              </span>
-              <span className="result-text">
-                {adminCheckResult.exists 
-                  ? `Admin exists: ${adminCheckResult.admin.username} (${adminCheckResult.admin.email})`
-                  : 'No admin found for this club'
-                }
-              </span>
+
+          <div className="form-group">
+            <label>Email:</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter email"
+              value={formData.email}
+              onChange={handleChange}
+              className={errors.email ? 'error' : ''}
+            />
+            {errors.email && <span className="error-message">{errors.email}</span>}
+          </div>
+
+          <div className="form-group">
+            <label>Password:</label>
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter password"
+              value={formData.password}
+              onChange={handleChange}
+              className={errors.password ? 'error' : ''}
+            />
+            {errors.password && <span className="error-message">{errors.password}</span>}
+          </div>
+
+          <div className="form-group">
+            <label>Confirm Password:</label>
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className={errors.confirmPassword ? 'error' : ''}
+            />
+            {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
+          </div>
+
+          <div className="form-group">
+            <label>Role:</label>
+            <select
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+            >
+              <option value="clubMember">Club Member</option>
+              <option value="admin">Admin (One per club only)</option>
+            </select>
+            {formData.role === 'admin' && (
+              <div className="role-info">
+                <span className="info-icon">ℹ️</span>
+                <span className="info-text">Only one admin is allowed per club. If an admin already exists, registration will be rejected.</span>
+              </div>
+            )}
+          </div>
+
+          <div className="form-group">
+            <label>Club Code:</label>
+            <div className="club-code-container">
+              <input
+                type="text"
+                name="clubCode"
+                placeholder="Enter Club's Unique Code"
+                value={formData.clubCode}
+                onChange={handleChange}
+                className={errors.clubCode ? 'error' : ''}
+              />
+              <button 
+                type="button" 
+                className="check-admin-btn"
+                onClick={checkAdminExists}
+                disabled={isCheckingAdmin || !formData.clubCode.trim()}
+              >
+                {isCheckingAdmin ? 'Checking...' : 'Check Admin'}
+              </button>
             </div>
-          )}
-        </div>
+            {errors.clubCode && <span className="error-message">{errors.clubCode}</span>}
+            
+            {adminCheckResult && (
+              <div className={`admin-check-result ${adminCheckResult.exists ? 'exists' : 'not-exists'}`}>
+                <span className="result-icon">
+                  {adminCheckResult.exists ? '❌' : '✅'}
+                </span>
+                <span className="result-text">
+                  {adminCheckResult.exists 
+                    ? `Admin exists: ${adminCheckResult.admin.username} (${adminCheckResult.admin.email})`
+                    : 'No admin found for this club'
+                  }
+                </span>
+              </div>
+            )}
+          </div>
 
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Submitting Request...' : 'Submit Registration Request'}
-        </button>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? 'Submitting Request...' : 'Submit Registration Request'}
+          </button>
 
-        <div className="login-link">
-          Already have an account? <span onClick={() => navigate('/admin-login')}>Login here</span>
-        </div>
-      </form>
-    </div>
+          <div className="login-link">
+            Already have an account? <span onClick={() => navigate('/admin-login')}>Login here</span>
+          </div>
+        </form>
+      </div>
+      <Footer />
+    </>
   );
 };
 
-export default Register; 
+export default Register;

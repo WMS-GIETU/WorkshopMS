@@ -83,88 +83,89 @@ const Home = () => {
     <>
       <Header />
       <div className="home-container1 main-with-header-footer">
-        <header className="home-header">
-          <h1>Upcoming Workshops</h1>
-        </header>
-
-        {loading ? (
-          <div className="loading-spinner-container">
-            <div className="loader"></div>
-            <p>Loading Workshops...</p>
-          </div>
-        ) : error ? (
-          <div className="error-message">
-            <p>{error}</p>
-          </div>
-        ) : workshops.length === 0 ? (
-          <div className="no-workshops-message">
-            <p>No upcoming workshops found.</p>
-          </div>
-        ) : (
-          <div className="workshop-cards1">
-            {workshops.map(w => (
-              <div key={w._id} className="workshop-card1" onClick={() => handleCardClick(w.name,w.description)}>
-                {w.image && <img src={getImageSrc(w.image.image)} alt={w.name} className="workshop-image" />}
-                <div className="workshop-info">
-                  <h3>{w.name}</h3>
-                  <p><strong>Club:</strong> {w.clubCode}</p>
-                  <p><strong>Date:</strong> {new Date(w.date).toLocaleDateString('en-GB')}</p>
-                  <p><strong>Location:</strong> {w.location}</p>
-                  <p className="topic"><em>{w.topic}</em></p>
-                  <button
-                    className="enroll-button"
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevent card click event from firing
-                      let url = w.link;
-                      if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                        url = 'https://' + url;
-                      }
-                      window.open(url, '_blank');
-                    }}
-                  >
-                    Enroll Now
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        <section className="album-section">
+        <div className="content-wrapper">
           <header className="home-header">
-            <h1>Album</h1>
+            <h1>Upcoming Workshops</h1>
           </header>
+
           {loading ? (
             <div className="loading-spinner-container">
               <div className="loader"></div>
-              <p>Loading Album...</p>
+              <p>Loading Workshops...</p>
             </div>
-          ) : albumImages.length === 0 ? (
+          ) : error ? (
+            <div className="error-message">
+              <p>{error}</p>
+            </div>
+          ) : workshops.length === 0 ? (
             <div className="no-workshops-message">
-              <p>No album images found.</p>
+              <p>No upcoming workshops found.</p>
             </div>
           ) : (
             <div className="workshop-cards1">
-              {albumImages.map(image => (
-                <div key={image._id} className="workshop-card1">
-                  <img src={getImageSrc(image.image)} alt={image.caption} className="workshop-image" />
-                   <div className="workshop-info">
-                    {image.workshopDetails ? (
-                      <>
-                        <p><strong>Workshop:</strong> {image.workshopDetails.name}</p>
-                        <p><strong>Club:</strong> {image.workshopDetails.clubCode}</p>
-                        <p><strong>Date:</strong> {new Date(image.workshopDetails.date).toLocaleDateString('en-GB')}</p>
-                      </>
-                    ) : (
-                      <p>{image.caption}</p>
-                    )}
+              {workshops.map(w => (
+                <div key={w._id} className="workshop-card1" onClick={() => handleCardClick(w.name,w.description)}>
+                  {w.image && <img src={getImageSrc(w.image.image)} alt={w.name} className="workshop-image" />}
+                  <div className="workshop-info">
+                    <h3>{w.name}</h3>
+                    <p><strong>Club:</strong> {w.clubCode}</p>
+                    <p><strong>Date:</strong> {new Date(w.date).toLocaleDateString('en-GB')}</p>
+                    <p><strong>Location:</strong> {w.location}</p>
+                    <p className="topic"><em>{w.topic}</em></p>
+                    <button
+                      className="enroll-button"
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent card click event from firing
+                        let url = w.link;
+                        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                          url = 'https://' + url;
+                        }
+                        window.open(url, '_blank');
+                      }}
+                    >
+                      Enroll Now
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
           )}
-        </section>
 
+          <section className="album-section">
+            <header className="home-header">
+              <h1>Album</h1>
+            </header>
+            {loading ? (
+              <div className="loading-spinner-container">
+              <div className="loader"></div>
+                <p>Loading Album...</p>
+              </div>
+            ) : albumImages.length === 0 ? (
+              <div className="no-album-images-message">
+                <p>No album images found.</p>
+              </div>
+            ) : (
+              <div className="workshop-cards1">
+                {albumImages.map(image => (
+                  <div key={image._id} className="workshop-card1">
+                    <img src={getImageSrc(image.image)} alt={image.caption} className="workshop-image" />
+                     <div className="workshop-info">
+                      {image.workshopDetails ? (
+                        <>
+                          <p><strong>Workshop:</strong> {image.workshopDetails.name}</p>
+                          <p><strong>Club:</strong> {image.workshopDetails.clubCode}</p>
+                          <p><strong>Date:</strong> {new Date(image.workshopDetails.date).toLocaleDateString('en-GB')}</p>
+                        </>
+                      ) : (
+                        <p>{image.caption}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+        </div>
         <Footer />
       </div>
     </>

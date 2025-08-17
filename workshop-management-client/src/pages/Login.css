@@ -1,19 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 .login-container {
-  height: 100vh;
   background: linear-gradient(135deg, #74ebd5, #acb6e5);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  padding: 20px;
   font-family: 'Poppins', sans-serif;
+  padding-top: 100px; /* Increased to add space below header */
+  padding-bottom: 80px; /* Increased to add space above footer */
+  min-height: calc(100vh - 180px); /* Adjusted to ensure content fills viewport minus header and footer */
+  box-sizing: border-box; /* Ensure padding doesn't increase element size */
 }
 
 .login-form {
   background-color: #fff;
   padding: 40px;
   width: 100%;
-  max-width: 400px;
+  max-width: 350px;
   border-radius: 15px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
@@ -37,7 +41,7 @@ label {
 }
 
 input[type="email"],
-input[type="password"]
+input[type="password"],
 input[type="text"] {
   width: 100%;
   padding: 12px;
