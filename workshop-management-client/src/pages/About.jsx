@@ -182,7 +182,7 @@ const About = () => {
         <section className="supervisor-section">
           <h2>Supervision</h2>
           <p>
-            <strong>Group No:</strong>B08<br />
+            <strong>Group No:</strong> B14 <br />
             <strong>Name of the Supervisor:</strong> Mr. Santosh Kumar Panda<br />
             <strong>Name of the Class Teacher:</strong> Mr. Tirupati Sahu
           </p>
