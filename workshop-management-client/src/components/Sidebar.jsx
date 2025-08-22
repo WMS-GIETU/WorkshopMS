@@ -50,39 +50,113 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    if (user?.role === 'student') {
+      navigate('/student-login');
+    } else {
+      navigate('/');
+    }
   };
 
   return (
     <aside className="sidebar">
-      <Link to="/intro">
-        <div className="user">
-          <img src="/user_icon.jpg" alt="User" className="user-icon" />
-          <span className="user-name">{getClubName(user?.clubCode) || 'Club'}</span>
-        </div>
-      </Link>
-      <ul className="menu">
-        {isAdmin() ? (
-          <>
-            <li><Link to="/new-workshop">📌 New Workshop</Link></li>
-            <li><Link to="/workshop-requests">📝 Requests
-              {isAdmin() && pendingRequestsCount > 0 && (
-                <span className="pending-requests-badge">{pendingRequestsCount}</span>
-              )}
-            </Link></li>
-          </>
-        ) : (
-          <li><Link to="/workshop-requests">📝 Request Workshop</Link></li>
-        )}
-        <li><Link to="/workshops">📚 Workshops</Link></li>
-        <li><Link to="/manageteam">👥 {isAdmin() ? 'Manage' : 'Team'}</Link></li>
-        <li><Link to="/attendance">📝 Attendance</Link></li>
-        <li><Link to="/album">🖼️ Albums</Link></li>
-      </ul>
-      <div className="logout">
+      {user && (
+        <Link to={user.clubCode === 'student' ? "/student-dashboard" : "/intro"} className="user-profile-link">
+          <div className="user-profile">
+            <div className="profile-pic">
+              <span>{user.username.charAt(0).toUpperCase()}</span>
+            </div>
+            <div className="user-details">
+              <span className="user-name">{user.username}</span>
+              <span className="user-rollno">{user.email.split('.')[0]}</span>
+            </div>
+          </div>
+        </Link>
+      )}
+      <nav className="menu">
+        <ul>
+          {user?.clubCode === 'student' ? (
+            <>
+              <li>
+                <Link to="/student-dashboard/my-workshops">
+                  <i className="fas fa-calendar-alt"></i> My Workshops
+                </Link>
+              </li>
+              <li>
+                <Link to="/student-dashboard/my-profile">
+                  <i className="fas fa-user"></i> My Profile
+                </Link>
+              </li>
+            </>
+          ) : user?.role === 'admin' ? (
+            <>
+              <li>
+                <Link to="/new-workshop">
+                  <i className="fas fa-plus-circle"></i> New Workshop
+                </Link>
+              </li>
+              <li>
+                <Link to="/workshop-requests">
+                  <i className="fas fa-file-alt"></i> Requests
+                  {isAdmin() && pendingRequestsCount > 0 && (
+                    <span className="pending-requests-badge">{pendingRequestsCount}</span>
+                  )}
+                </Link>
+              </li>
+              <li>
+                <Link to="/workshops">
+                  <i className="fas fa-book"></i> Workshops
+                </Link>
+              </li>
+              <li>
+                <Link to="/manageteam">
+                  <i className="fas fa-users"></i> Manage Team
+                </Link>
+              </li>
+              <li>
+                <Link to="/attendance">
+                  <i className="fas fa-check-square"></i> Attendance
+                </Link>
+              </li>
+              <li>
+                <Link to="/album">
+                  <i className="fas fa-images"></i> Albums
+                </Link>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link to="/workshop-requests">
+                  <i className="fas fa-file-alt"></i> Request Workshop
+                </Link>
+              </li>
+              <li>
+                <Link to="/workshops">
+                  <i className="fas fa-book"></i> Workshops
+                </Link>
+              </li>
+              <li>
+                <Link to="/manageteam">
+                  <i className="fas fa-users"></i> Team
+                </Link>
+              </li>
+              <li>
+                <Link to="/attendance">
+                  <i className="fas fa-check-square"></i> Attendance
+                </Link>
+              </li>
+              <li>
+                <Link to="/album">
+                  <i className="fas fa-images"></i> Albums
+                </Link>
+              </li>
+            </>
+          )}
+        </ul>
+      </nav>
+      <div className="logout-container">
         <button onClick={handleLogout} className="logout-btn">
-          <span className="logout-icon">🚪</span>
-          <span className="logout-text">Logout</span>
+          <i className="fas fa-sign-out-alt"></i> Logout
         </button>
       </div>
     </aside>
