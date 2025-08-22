@@ -1,7 +1,10 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const otpGenerator = require('otp-generator');
 const User = require('../models/User');
+const Otp = require('../models/Otp');
+const { sendEmail } = require('../config/email');
 
 const router = express.Router();
 
@@ -69,6 +72,46 @@ router.post('/register', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+// Student Registration - Request OTP
+router.post('/register-student', async (req, res) => {
+  const { username, email } = req.body;
+
+  try {
+    // Validate email format: rollno.full_name@giet.edu
+    const emailRegex = /^[a-zA-Z0-9]+\.[a-zA-Z.]+@giet\.edu$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: 'Invalid college email format. Must be in the form rollno.full_name@giet.edu' });
+    }
+
+    // Check if user with this email already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'A user with this email already exists.' });
+    }
+
+    // Generate OTP
+    const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false });
+
+    // Save OTP to database (or update if already exists for this email)
+    await Otp.findOneAndUpdate(
+      { email },
+      { otp, createdAt: Date.now() }, // Update createdAt to reset expiration
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    // Send OTP via email
+    await sendEmail(email, 'studentOtp', { username, otp });
+
+    res.status(200).json({ message: 'OTP sent to your college email.' });
+
+  } catch (error) {
+    console.error('Student registration request error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
 
 // Login
 router.post('/login', async (req, res) => {
@@ -242,6 +285,103 @@ router.put('/users/:userId', authMiddleware, async (req, res) => {
     res.json({ message: 'User updated successfully.', user: userToUpdate });
   } catch (err) {
     console.error('Update user error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Student Registration - Verify OTP
+router.post('/verify-student', async (req, res) => {
+  const { username, email, password, otp } = req.body;
+
+  try {
+    // Find the OTP for the given email
+    const otpData = await Otp.findOne({ email });
+
+    if (!otpData) {
+      return res.status(400).json({ message: 'OTP not found or expired.' });
+    }
+
+    // Verify the OTP
+    if (otpData.otp !== otp) {
+      return res.status(400).json({ message: 'Invalid OTP.' });
+    }
+
+    // Check if OTP is expired (e.g., within 10 minutes)
+    const tenMinutes = 10 * 60 * 1000;
+    if (new Date() - otpData.createdAt > tenMinutes) {
+      return res.status(400).json({ message: 'OTP has expired.' });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user
+    const nameFromEmail = email.split('@')[0].split('.').slice(1).join('.');
+    const newUser = new User({
+      username: nameFromEmail,
+      email,
+      password: hashedPassword,
+      roles: ['student'], // Assign the student role
+      clubCode: 'student', // Or some other default/logic for student clubCode
+    });
+
+    await newUser.save();
+
+    // Delete the used OTP
+    await Otp.deleteOne({ email });
+
+    res.status(201).json({ message: 'Student registered successfully!' });
+
+  } catch (error) {
+    console.error('Student verification error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Student Login
+router.post('/student-login', async (req, res) => {
+  const { email, password } = req.body;
+  console.log('Student login attempt:', { email });
+  try {
+    // Find user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    // Check if the user is a student
+    if (!user.roles.includes('student')) {
+      return res.status(403).json({ message: 'You are not authorized to access this page.' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign(
+      {
+        userId: user._id,
+        username: user.username,
+        roles: user.roles,
+        clubCode: user.clubCode,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    res.json({
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        roles: user.roles,
+        clubCode: user.clubCode,
+      },
+    });
+  } catch (err) {
+    console.error('Student login error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });

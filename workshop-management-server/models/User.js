@@ -17,12 +17,14 @@ const UserSchema = new mongoose.Schema({
   },
   roles: [{
     type: String,
-    enum: ['admin', 'clubMember'],
+    enum: ['admin', 'clubMember', 'student'],
     required: true,
   }],
   clubCode: {
     type: String,
-    required: true,
+    required: function() {
+      return this.roles.includes('admin') || this.roles.includes('clubMember');
+    },
     lowercase: true,
   },
   createdAt: {

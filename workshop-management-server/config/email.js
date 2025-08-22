@@ -80,7 +80,7 @@ const emailTemplates = {
   }),
 
   // Approval/rejection notification
-  approvalNotification: (userData) => ({
+    approvalNotification: (userData) => ({
     subject: `Registration Request ${userData.approved ? 'Approved' : 'Rejected'} - Workshop Management System`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -121,8 +121,26 @@ const emailTemplates = {
         </p>
       </div>
     `
+  }),
+
+  studentOtp: (userData) => ({
+    subject: 'Your OTP for Student Registration',
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #3f51b5;">Student Registration OTP</h2>
+        <p>Hello ${userData.username},</p>
+        <p>Your OTP for registering as a student is:</p>
+        <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
+          <h3 style="font-size: 24px; letter-spacing: 2px;">${userData.otp}</h3>
+        </div>
+        <p>This OTP is valid for 10 minutes.</p>
+        <p style="color: #666; font-size: 14px;">
+          This is an automated message from the Workshop Management System.
+        </p>
+      </div>
+    `
   })
-};
+};;
 
 // Send email function
 const sendEmail = async (to, template, data) => {

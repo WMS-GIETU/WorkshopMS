@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -49,8 +49,7 @@ const AdminLogin = () => {
           // Provide more specific error message
           const roles = Array.isArray(data.user.roles) ? data.user.roles.join(', ') : 'none';
           alert(`This login is only for Admins. Your account has the following roles: ${roles}. Please use Club Member Login for club member accounts.`);
-        }
-      } else {
+        }      } else {
         alert(data.message || 'Login failed');
       }
     } catch (error) {
@@ -98,6 +97,9 @@ const AdminLogin = () => {
             />
           </div>
           <button type="submit">Login</button>
+          <div className="login-link">
+            Don't have an account? <Link to="/register">Register here</Link>
+          </div>
         </form>
       </div>
       <Footer />
