@@ -87,7 +87,7 @@ const Sidebar = () => {
                 </Link>
               </li>
             </>
-          ) : user?.role === 'admin' ? (
+          ) : isAdmin() ? (
             <>
               <li>
                 <Link to="/new-workshop">

@@ -39,9 +39,9 @@ router.post('/submit', authMiddleware, upload.single('image'), async (req, res) 
     const { workshopName, date, time, location, topic, description, link, maxParticipants } = req.body;
     const { userId, username, roles, clubCode } = req.user;
 
-    // Check if user is a club member
-    if (!roles.includes('clubMember')) {
-      return res.status(403).json({ message: 'Only club members can submit workshop requests' });
+    // Check if user is a club member or admin
+    if (!roles.includes('clubMember') && !roles.includes('admin')) {
+      return res.status(403).json({ message: 'Only club members or admins can submit workshop requests' });
     }
 
     const workshopRequest = new WorkshopRequest({

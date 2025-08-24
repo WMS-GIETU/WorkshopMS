@@ -19,11 +19,7 @@ const RequestWorkshop = () => {
   });
   const [imageFile, setImageFile] = useState(null); // New state for image file
 
-  // Redirect if user is admin (admins create workshops directly)
-  if (isAdmin()) {
-    navigate('/new-workshop');
-    return null;
-  }
+  
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target; // Destructure type and files

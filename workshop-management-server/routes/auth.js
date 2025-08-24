@@ -75,33 +75,38 @@ router.post('/register', async (req, res) => {
 
 // Student Registration - Request OTP
 router.post('/register-student', async (req, res) => {
-  const { username, email } = req.body;
+  const { username, email, name, rollNo } = req.body; // Added name and rollNo
 
   try {
-    // Validate email format: rollno.full_name@giet.edu
-    const emailRegex = /^[a-zA-Z0-9]+\.[a-zA-Z.]+@giet\.edu$/;
+    // Basic validation
+    if (!username || !email || !name || !rollNo) {
+      return res.status(400).json({ message: 'All fields are required.' });
+    }
+    
+    // Validate email format
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@giet.edu$/;
     if (!emailRegex.test(email)) {
-      return res.status(400).json({ message: 'Invalid college email format. Must be in the form rollno.full_name@giet.edu' });
+      return res.status(400).json({ message: 'Invalid college email format.' });
     }
 
-    // Check if user with this email already exists
-    const existingUser = await User.findOne({ email });
+    // Check if user with this email or roll number already exists
+    const existingUser = await User.findOne({ $or: [{ email }, { rollNo }] });
     if (existingUser) {
-      return res.status(400).json({ message: 'A user with this email already exists.' });
+      return res.status(400).json({ message: 'A user with this email or roll number already exists.' });
     }
 
     // Generate OTP
     const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false });
 
-    // Save OTP to database (or update if already exists for this email)
+    // Save OTP to database
     await Otp.findOneAndUpdate(
       { email },
-      { otp, createdAt: Date.now() }, // Update createdAt to reset expiration
+      { otp, createdAt: Date.now() },
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
 
     // Send OTP via email
-    await sendEmail(email, 'studentOtp', { username, otp });
+    await sendEmail(email, 'studentOtp', { username, otp, name, rollNo });
 
     res.status(200).json({ message: 'OTP sent to your college email.' });
 
@@ -291,7 +296,7 @@ router.put('/users/:userId', authMiddleware, async (req, res) => {
 
 // Student Registration - Verify OTP
 router.post('/verify-student', async (req, res) => {
-  const { username, email, password, otp } = req.body;
+  const { username, email, password, otp, name, rollNo } = req.body; // Added name and rollNo
 
   try {
     // Find the OTP for the given email
@@ -316,13 +321,14 @@ router.post('/verify-student', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user
-    const nameFromEmail = email.split('@')[0].split('.').slice(1).join('.');
     const newUser = new User({
-      username: nameFromEmail,
+      username,
       email,
       password: hashedPassword,
-      roles: ['student'], // Assign the student role
-      clubCode: 'student', // Or some other default/logic for student clubCode
+      roles: ['student'],
+      clubCode: 'student', 
+      name, // Save the student's name
+      rollNo, // Save the student's roll number
     });
 
     await newUser.save();
@@ -334,6 +340,10 @@ router.post('/verify-student', async (req, res) => {
 
   } catch (error) {
     console.error('Student verification error:', error);
+    // Handle duplicate key error for rollNo
+    if (error.code === 11000) {
+      return res.status(400).json({ message: 'A user with this roll number already exists.' });
+    }
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -365,6 +375,8 @@ router.post('/student-login', async (req, res) => {
         username: user.username,
         roles: user.roles,
         clubCode: user.clubCode,
+        name: user.name, // Add name to token
+        rollNo: user.rollNo, // Add rollNo to token
       },
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
@@ -378,10 +390,24 @@ router.post('/student-login', async (req, res) => {
         email: user.email,
         roles: user.roles,
         clubCode: user.clubCode,
+        name: user.name, // Add name to response
+        rollNo: user.rollNo, // Add rollNo to response
       },
     });
   } catch (err) {
     console.error('Student login error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+// Get current user profile
+router.get('/me', authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId).select('-password');
+    res.json(user);
+  } catch (err) {
+    console.error('Get user profile error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });

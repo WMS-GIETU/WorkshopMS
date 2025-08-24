@@ -186,7 +186,7 @@ const NewWorkshop = () => {
               <p>Club members can request workshops for admin approval.</p>
               <button 
                 className="request-workshop-btn"
-                onClick={() => navigate('/workshop-requests')}
+                onClick={() => navigate('/request-workshop')}
               >
                 📝 Request Workshop
               </button>

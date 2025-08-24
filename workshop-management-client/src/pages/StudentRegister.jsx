@@ -8,6 +8,7 @@ import './Register.css'; // Reusing some styles from the general Register page
 const StudentRegister = () => {
   const [step, setStep] = useState(1);
   const [fullName, setFullName] = useState('');
+  const [rollNo, setRollNo] = useState(''); // Added rollNo state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [otp, setOtp] = useState('');
@@ -20,7 +21,12 @@ const StudentRegister = () => {
     setError('');
     setMessage('');
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register-student', { username: fullName, email });
+      const response = await axios.post('http://localhost:5000/api/auth/register-student', { 
+        username: fullName, 
+        email, 
+        name: fullName, 
+        rollNo 
+      });
       setMessage(response.data.message);
       setStep(2);
     } catch (err) {
@@ -33,7 +39,14 @@ const StudentRegister = () => {
     setError('');
     setMessage('');
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/verify-student', { username: fullName, email, password, otp });
+      const response = await axios.post('http://localhost:5000/api/auth/verify-student', { 
+        username: fullName, 
+        email, 
+        password, 
+        otp, 
+        name: fullName, 
+        rollNo 
+      });
       setMessage(response.data.message + ' Redirecting to login...');
       setTimeout(() => {
         navigate('/student-login');
@@ -65,7 +78,17 @@ const StudentRegister = () => {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="email">College Email (rollno.full_name@giet.edu)</label>
+                <label htmlFor="rollNo">Roll Number</label>
+                <input
+                  type="text"
+                  id="rollNo"
+                  value={rollNo}
+                  onChange={(e) => setRollNo(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="email">College Email</label>
                 <input
                   type="email"
                   id="email"

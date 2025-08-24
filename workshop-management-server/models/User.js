@@ -27,6 +27,16 @@ const UserSchema = new mongoose.Schema({
     },
     lowercase: true,
   },
+  name: { // Added field for student's full name
+    type: String,
+    trim: true,
+  },
+  rollNo: { // Added field for student's roll number
+    type: String,
+    trim: true,
+    unique: true,
+    sparse: true, // Allows null/missing values to not violate uniqueness
+  },
   createdAt: {
     type: Date,
     default: Date.now,

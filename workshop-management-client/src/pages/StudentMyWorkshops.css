@@ -1,0 +1,83 @@
+/* Custom styles for StudentMyWorkshops.jsx to achieve a classic and decent look */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+
+.student-workshops-container-sw {
+  font-family: 'Playfair Display', serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.workshops-wrapper-sw {
+  max-width: 48rem;
+  background-color: transparent;
+  border: 1px solid black;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.workshops-title-sw {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a2a44;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.05em;
+}
+
+.workshops-table-container-sw {
+  overflow-x: auto;
+}
+
+.workshops-table-sw {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #d4d4d4;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.table-header-sw {
+  background-color: #edf2f7;
+}
+
+.table-header-sw .table-cell-sw {
+  font-weight: 700;
+  color: #1a2a44;
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 2px solid #d4d4d4;
+}
+
+.table-row-sw {
+  transition: background-color 0.3s ease;
+}
+
+.table-row-sw:hover {
+  background-color: #f9fafb;
+}
+
+.table-cell-sw {
+  padding: 1rem;
+  font-size: 1rem;
+  color: #374151;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+.no-workshops-sw {
+  font-size: 1.125rem;
+  color: #4b5563;
+  text-align: center;
+  padding: 1rem;
+}
+
+.workshops-footer-sw {
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+  color: #4b5563;
+  text-align: center;
+}
