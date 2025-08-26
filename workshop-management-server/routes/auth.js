@@ -353,8 +353,10 @@ router.post('/student-login', async (req, res) => {
   const { email, password } = req.body;
   console.log('Student login attempt:', { email });
   try {
+    // Normalize email to lowercase
+    const normalizedEmail = email.toLowerCase();
     // Find user by email
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
