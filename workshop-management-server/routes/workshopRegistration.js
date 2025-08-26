@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const WorkshopRegistration = require('../models/WorkshopRegistration');
-const authMiddleware = require('../middleware/authMiddleware');
+const { protect } = require('../middleware/authMiddleware'); // Corrected import
 
 // Register for a workshop
-router.post('/register', authMiddleware, async (req, res) => {
+router.post('/register', protect, async (req, res) => {
   try {
     const { workshopId } = req.body;
     const { userId } = req.user;
@@ -28,7 +28,7 @@ router.post('/register', authMiddleware, async (req, res) => {
 });
 
 // Get all users registered for a workshop
-router.get('/workshop/:workshopId', authMiddleware, async (req, res) => {
+router.get('/workshop/:workshopId', protect, async (req, res) => {
   try {
     const { workshopId } = req.params;
     const registrations = await WorkshopRegistration.find({ workshop: workshopId }).populate('user', 'username email');
@@ -39,7 +39,7 @@ router.get('/workshop/:workshopId', authMiddleware, async (req, res) => {
 });
 
 // Get all workshops a user is registered for
-router.get('/user/:userId', authMiddleware, async (req, res) => {
+router.get('/user/:userId', protect, async (req, res) => {
   try {
     const { userId } = req.params;
     const registrations = await WorkshopRegistration.find({ user: userId }).populate('workshop');

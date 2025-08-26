@@ -139,12 +139,57 @@ const emailTemplates = {
         </p>
       </div>
     `
+  }),
+
+    faceUpdateRequest: (data) => ({
+    subject: 'Face Data Update Request',
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #3f51b5;">Face Data Update Request</h2>
+        <p>Student ${data.username} (Roll No: ${data.rollNo}, Email: ${data.email}) has requested to update their face data.</p>
+        <p><strong>Reason:</strong> ${data.reason}</p>
+        <p>Request ID: ${data.requestId}</p>
+        
+        <div style="margin: 30px 0;">
+          <a href="${process.env.BACKEND_URL || 'http://localhost:5000'}/api/face/approve-update-request/${data.requestId}" 
+             style="background-color: #4caf50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin-right: 10px;">
+            ✅ Approve Request
+          </a>
+          <a href="${process.env.BACKEND_URL || 'http://localhost:5000'}/api/face/reject-update-request/${data.requestId}" 
+             style="background-color: #f44336; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">
+            ❌ Reject Request
+          </a>
+        </div>
+        
+        <p style="color: #666; font-size: 14px;">
+          This is an automated message from the Workshop Management System.
+        </p>
+      </div>
+    `
+  }),
+
+  faceUpdateNotification: (data) => ({
+    subject: `Your Face Data Update Request Has Been ${data.status}`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: ${data.status === 'approved' ? '#4caf50' : '#f44336'};">Face Data Update Request ${data.status}</h2>
+        <p>Dear ${data.username},</p>
+        <p>Your request to update your face data has been ${data.status}.</p>
+        ${data.status === 'approved' ? `<p>You can now proceed to the StudentMyProfile page to scan and upload your new face data.</p>` : `<p>Please contact the administration for more details if needed.</p>`}
+        <p style="color: #666; font-size: 14px;">
+          This is an automated message from the Workshop Management System.
+        </p>
+      </div>
+    `
   })
-};;
+};
+
 
 // Send email function
 const sendEmail = async (to, template, data) => {
   try {
+    console.log('Template received:', template);
+    console.log('emailTemplates[template]:', emailTemplates[template]);
     const emailContent = emailTemplates[template](data);
     
     const mailOptions = {

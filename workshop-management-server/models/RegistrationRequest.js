@@ -39,8 +39,7 @@ const RegistrationRequestSchema = new mongoose.Schema({
   },
   // For admin requests - sent to system admin
   systemAdminEmail: { 
-    type: String, 
-    default: 'grocerystore9437@gmail.com' 
+    type: String
   },
   // For member requests - sent to club admin
   clubAdminEmail: { 

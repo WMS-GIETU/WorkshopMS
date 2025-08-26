@@ -31,7 +31,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  rollNo: { // Added field for student's roll number
+  rollNo: {
     type: String,
     trim: true,
     unique: true,

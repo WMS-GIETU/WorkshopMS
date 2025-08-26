@@ -1,7 +1,7 @@
 const express = require('express');
 const Workshop = require('../models/Workshop');
 const WorkshopImage = require('../models/WorkshopImage'); // Import the new model
-const authMiddleware = require('../middleware/authMiddleware');
+const { protect, authorize } = require('../middleware/authMiddleware'); // Corrected import
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs'); // Import fs to read the file
@@ -30,7 +30,7 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }
 });
 
-router.post('/create', authMiddleware, upload.single('image'), async (req, res) => {
+router.post('/create', protect, authorize(['admin']), upload.single('image'), async (req, res) => {
   try {
     const { name, date, time, location, topic, description, maxParticipants, clubCode, link } = req.body;
     const { userId, roles, clubCode: userClubCode } = req.user;
@@ -94,7 +94,7 @@ router.post('/create', authMiddleware, upload.single('image'), async (req, res) 
   }
 });
 
-router.get('/', authMiddleware, async (req, res) => {
+router.get('/', protect, async (req, res) => {
   try {
     const { clubCode } = req.user;
     const workshops = await Workshop.find({ clubCode }).populate('image'); // Populate the image field
@@ -117,7 +117,7 @@ router.get('/public', async (req, res) => {
 });
 
 // New route to get a single workshop by ID
-router.get('/:workshopId', authMiddleware, async (req, res) => {
+router.get('/:workshopId', protect, async (req, res) => {
   try {
     const { workshopId } = req.params;
     const workshop = await Workshop.findById(workshopId).populate('image');
@@ -131,7 +131,7 @@ router.get('/:workshopId', authMiddleware, async (req, res) => {
   }
 });
 
-router.put('/:workshopId', authMiddleware, async (req, res) => {
+router.put('/:workshopId', protect, authorize(['admin']), async (req, res) => {
   try {
     const { workshopId } = req.params;
     const { name, date, time, location, topic, description, link, maxParticipants, clubCode } = req.body;
@@ -172,7 +172,7 @@ router.put('/:workshopId', authMiddleware, async (req, res) => {
   }
 });
 
-router.delete('/:workshopId', authMiddleware, async (req, res) => {
+router.delete('/:workshopId', protect, authorize(['admin']), async (req, res) => {
   try {
     const { workshopId } = req.params;
     const { roles, clubCode } = req.user;

@@ -202,10 +202,10 @@ router.get('/check-admin/:clubCode', async (req, res) => {
 });
 
 
-const authMiddleware = require('../middleware/authMiddleware');
+const { protect } = require('../middleware/authMiddleware'); // Corrected import
 
 // Get all users for the logged-in admin's club
-router.get('/users', authMiddleware, async (req, res) => {
+router.get('/users', protect, async (req, res) => {
   try {
     console.log('Request to /api/auth/users received');
     console.log('req.user:', req.user);
@@ -228,7 +228,7 @@ router.get('/users', authMiddleware, async (req, res) => {
 });
 
 // Delete a user
-router.delete('/users/:userId', authMiddleware, async (req, res) => {
+router.delete('/users/:userId', protect, async (req, res) => {
   try {
     const { roles, clubCode } = req.user;
     const { userId } = req.params;
@@ -259,7 +259,7 @@ router.delete('/users/:userId', authMiddleware, async (req, res) => {
 });
 
 // Update a user
-router.put('/users/:userId', authMiddleware, async (req, res) => {
+router.put('/users/:userId', protect, async (req, res) => {
   try {
     const { roles, clubCode } = req.user;
     const { userId } = req.params;
@@ -402,7 +402,7 @@ router.post('/student-login', async (req, res) => {
 
 
 // Get current user profile
-router.get('/me', authMiddleware, async (req, res) => {
+router.get('/me', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.userId).select('-password');
     res.json(user);

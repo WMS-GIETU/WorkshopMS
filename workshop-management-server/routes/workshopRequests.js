@@ -3,7 +3,7 @@ const WorkshopRequest = require('../models/WorkshopRequest');
 const Workshop = require('../models/Workshop');
 const User = require('../models/User');
 const WorkshopImage = require('../models/WorkshopImage'); // Import the new model
-const authMiddleware = require('../middleware/authMiddleware');
+const { protect, authorize } = require('../middleware/authMiddleware'); // Corrected import
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs'); // Import fs to read the file
@@ -34,7 +34,7 @@ const upload = multer({
 const router = express.Router();
 
 // Submit workshop request (Club members only)
-router.post('/submit', authMiddleware, upload.single('image'), async (req, res) => {
+router.post('/submit', protect, upload.single('image'), async (req, res) => {
   try {
     const { workshopName, date, time, location, topic, description, link, maxParticipants } = req.body;
     const { userId, username, roles, clubCode } = req.user;
@@ -73,7 +73,7 @@ router.post('/submit', authMiddleware, upload.single('image'), async (req, res) 
 });
 
 // Get workshop requests (Admin can see all, Club members see their own)
-router.get('/requests', authMiddleware, async (req, res) => {
+router.get('/requests', protect, async (req, res) => {
   try {
     const { userId, roles, clubCode } = req.user;
     let requests;
@@ -94,7 +94,7 @@ router.get('/requests', authMiddleware, async (req, res) => {
 });
 
 // Approve workshop request (Admin only) - This will create the workshop
-router.put('/approve/:requestId', authMiddleware, async (req, res) => {
+router.put('/approve/:requestId', protect, authorize(['admin']), async (req, res) => {
   try {
     const { requestId } = req.params;
     const { userId, username, roles, clubCode } = req.user;
@@ -187,7 +187,7 @@ router.put('/approve/:requestId', authMiddleware, async (req, res) => {
 });
 
 // Reject workshop request (Admin only)
-router.put('/reject/:requestId', authMiddleware, async (req, res) => {
+router.put('/reject/:requestId', protect, authorize(['admin']), async (req, res) => {
   try {
     const { requestId } = req.params;
     const { userId, username, roles, clubCode } = req.user;
@@ -233,7 +233,7 @@ router.put('/reject/:requestId', authMiddleware, async (req, res) => {
 });
 
 // Get request statistics
-router.get('/stats', authMiddleware, async (req, res) => {
+router.get('/stats', protect, async (req, res) => {
   try {
     const { userId, roles, clubCode } = req.user;
     let stats;

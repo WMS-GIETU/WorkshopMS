@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const RegistrationRequest = require('../models/RegistrationRequest');
 const User = require('../models/User');
 const { sendEmail } = require('../config/email');
+const adminEmail = process.env.ADMIN_EMAIL;
 
 const router = express.Router();
 
@@ -82,7 +83,7 @@ router.post('/submit-request', async (req, res) => {
     if (role === 'admin') {
       console.log('Processing admin request...');
       requestType = 'admin';
-      targetEmail = 'grocerystore9437@gmail.com';
+      targetEmail = adminEmail;
       requestArrayIndex = 0;
       
       // Check if admin already exists for this club

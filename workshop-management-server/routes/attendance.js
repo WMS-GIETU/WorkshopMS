@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Attendance = require('../models/Attendance');
-const authMiddleware = require('../middleware/authMiddleware');
+const { protect } = require('../middleware/authMiddleware');
 
 // Mark attendance
-router.post('/mark', authMiddleware, async (req, res) => {
+router.post('/mark', protect, async (req, res) => {
   try {
     const { workshopId, presentUserIds } = req.body;
 

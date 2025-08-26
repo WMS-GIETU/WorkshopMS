@@ -10,6 +10,7 @@ const workshopRoutes = require('./routes/workshops');
 const albumRoutes = require('./routes/album');
 const workshopRegistrationRoutes = require('./routes/workshopRegistration');
 const attendanceRoutes = require('./routes/attendance');
+const faceRoutes = require('./routes/face'); // New import
 const path = require('path');
 
 const app = express();
@@ -24,6 +25,7 @@ app.use('/api/workshops', workshopRoutes);
 app.use('/api/album', albumRoutes);
 app.use('/api/workshop-registrations', workshopRegistrationRoutes);
 app.use('/api/attendance', attendanceRoutes);
+app.use('/api/face', faceRoutes); // New route
 
 // Serve frontend
 if (process.env.NODE_ENV === 'production') {
