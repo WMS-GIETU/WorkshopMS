@@ -118,45 +118,80 @@ router.post('/register-student', async (req, res) => {
 
 
 
-// Login
+// Unified Login for all roles
 router.post('/login', async (req, res) => {
-  const { username, password, clubCode } = req.body;
-  console.log('Login attempt:', { username, clubCode });
-  try {
-    // Normalize username and clubCode to lowercase
-    const normalizedUsername = username.toLowerCase();
-    const normalizedClubCode = clubCode.toLowerCase();
+  const { username, password, clubCode, email } = req.body;
+  console.log('Login attempt:', { username, clubCode, email });
 
-    // Find user by username and clubCode
-    const user = await User.findOne({ 
-      username: normalizedUsername, 
-      clubCode: normalizedClubCode 
-    });
-    console.log('User found:', user ? user.username : 'No user');
-    if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+  try {
+    let user;
+
+    if (email) {
+      // Student login: Find user by email
+      const normalizedEmail = email.toLowerCase();
+      user = await User.findOne({ email: normalizedEmail });
+
+      // If a user is found, ensure they have the 'student' role
+      if (user && !user.roles.includes('student')) {
+        return res.status(403).json({ message: 'This login is for students only.' });
+      }
+    } else if (username && clubCode) {
+      // Admin/Club member login: Find user by username and clubCode
+      const normalizedUsername = username.toLowerCase();
+      const normalizedClubCode = clubCode.toLowerCase();
+      user = await User.findOne({ 
+        username: normalizedUsername, 
+        clubCode: normalizedClubCode 
+      });
+    } else {
+      // If neither email nor username/clubCode is provided
+      return res.status(400).json({ message: 'Please provide email or username and club code.' });
+    }
+
+    if (!user) {
+      console.log('No user found with provided credentials.');
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log('Password match:', isMatch);
-    if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!isMatch) {
+      console.log('Password mismatch for user:', user.username || user.email);
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
 
-    const token = jwt.sign({ 
+    // Create JWT payload
+    const tokenPayload = { 
       userId: user._id, 
       username: user.username,
       roles: user.roles,
       clubCode: user.clubCode
-    }, process.env.JWT_SECRET, { expiresIn: '24h' });
-    console.log('Token generated for user:', user.username);
+    };
+
+    // Create user payload for the response
+    const userPayload = {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      roles: user.roles,
+      clubCode: user.clubCode
+    };
+
+    // Add student-specific fields if the user is a student
+    if (user.roles.includes('student')) {
+      tokenPayload.name = user.name;
+      tokenPayload.rollNo = user.rollNo;
+      userPayload.name = user.name;
+      userPayload.rollNo = user.rollNo;
+    }
+
+    const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: '24h' });
     
+    console.log('Token generated for user:', user.username || user.email);
     res.json({ 
       token,
-      user: {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        roles: user.roles,
-        clubCode: user.clubCode
-      }
+      user: userPayload
     });
+
   } catch (err) {
     console.error('Login error:', err);
     res.status(500).json({ message: 'Server error' });
@@ -348,59 +383,7 @@ router.post('/verify-student', async (req, res) => {
   }
 });
 
-// Student Login
-router.post('/student-login', async (req, res) => {
-  const { email, password } = req.body;
-  console.log('Student login attempt:', { email });
-  try {
-    // Normalize email to lowercase
-    const normalizedEmail = email.toLowerCase();
-    // Find user by email
-    const user = await User.findOne({ email: normalizedEmail });
-    if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
 
-    // Check if the user is a student
-    if (!user.roles.includes('student')) {
-      return res.status(403).json({ message: 'You are not authorized to access this page.' });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
-
-    const token = jwt.sign(
-      {
-        userId: user._id,
-        username: user.username,
-        roles: user.roles,
-        clubCode: user.clubCode,
-        name: user.name, // Add name to token
-        rollNo: user.rollNo, // Add rollNo to token
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: '24h' }
-    );
-
-    res.json({
-      token,
-      user: {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        roles: user.roles,
-        clubCode: user.clubCode,
-        name: user.name, // Add name to response
-        rollNo: user.rollNo, // Add rollNo to response
-      },
-    });
-  } catch (err) {
-    console.error('Student login error:', err);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
 
 
 // Get current user profile
