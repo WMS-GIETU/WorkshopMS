@@ -56,7 +56,7 @@ const StudentMyProfile = () => {
     const fetchFaceStatus = async () => {
       if (!user || !token) return;
       try {
-        const response = await fetch('http://localhost:5000/api/face/status', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/face/status`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -171,7 +171,7 @@ const StudentMyProfile = () => {
     setScanStatus('Submitting face data...');
 
     try {
-      const response = await fetch('http://localhost:5000/api/face/upload', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/face/upload`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -243,7 +243,7 @@ const StudentMyProfile = () => {
     const fetchFaceStatus = async () => {
       if (!user || !token) return;
       try {
-        const response = await fetch('http://localhost:5000/api/face/status', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/face/status`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
