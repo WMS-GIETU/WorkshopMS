@@ -28,11 +28,11 @@ const emailTemplates = {
         </div>
         
         <div style="margin: 30px 0;">
-          <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/approve-request/${userData.requestId}" 
+          <a href="${process.env.FRONTEND_URL}/approve-request/${userData.requestId}" 
              style="background-color: #4caf50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin-right: 10px;">
             ✅ Approve Request
           </a>
-          <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/reject-request/${userData.requestId}" 
+          <a href="${process.env.FRONTEND_URL}/reject-request/${userData.requestId}" 
              style="background-color: #f44336; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">
             ❌ Reject Request
           </a>
@@ -62,11 +62,11 @@ const emailTemplates = {
         </div>
         
         <div style="margin: 30px 0;">
-          <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/approve-request/${userData.requestId}" 
+          <a href="${process.env.FRONTEND_URL}/approve-request/${userData.requestId}" 
              style="background-color: #4caf50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin-right: 10px;">
             ✅ Approve Request
           </a>
-          <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/reject-request/${userData.requestId}" 
+          <a href="${process.env.FRONTEND_URL}/reject-request/${userData.requestId}" 
              style="background-color: #f44336; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">
             ❌ Reject Request
           </a>
@@ -103,7 +103,7 @@ const emailTemplates = {
           </div>
           
           <div style="margin: 30px 0;">
-            <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/admin-login" 
+            <a href="${process.env.FRONTEND_URL}/admin-login" 
                style="background-color: #3f51b5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">
               🚀 Login to System
             </a>
@@ -151,11 +151,11 @@ const emailTemplates = {
         <p>Request ID: ${data.requestId}</p>
         
         <div style="margin: 30px 0;">
-          <a href="${process.env.BACKEND_URL || 'http://localhost:5000'}/api/face/approve-update-request/${data.requestId}" 
+          <a href="${process.env.BACKEND_URL}/api/face/approve-update-request/${data.requestId}" 
              style="background-color: #4caf50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin-right: 10px;">
             ✅ Approve Request
           </a>
-          <a href="${process.env.BACKEND_URL || 'http://localhost:5000'}/api/face/reject-update-request/${data.requestId}" 
+          <a href="${process.env.BACKEND_URL}/api/face/reject-update-request/${data.requestId}" 
              style="background-color: #f44336; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">
             ❌ Reject Request
           </a>

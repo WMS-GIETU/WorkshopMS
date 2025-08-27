@@ -21,7 +21,7 @@ const StudentRegister = () => {
     setError('');
     setMessage('');
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register-student', { 
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/register-student`, { 
         username: fullName, 
         email, 
         name: fullName, 
@@ -39,7 +39,7 @@ const StudentRegister = () => {
     setError('');
     setMessage('');
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/verify-student', { 
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/verify-student`, { 
         username: fullName, 
         email, 
         password, 
