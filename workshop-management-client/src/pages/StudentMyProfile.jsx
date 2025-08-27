@@ -214,7 +214,7 @@ const StudentMyProfile = () => {
     }
     setIsSubmittingUpdateRequest(true);
     try {
-      const response = await fetch('http://localhost:5000/api/face/request-update', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/face/request-update`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
