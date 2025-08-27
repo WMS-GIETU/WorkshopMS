@@ -37,6 +37,14 @@ router.post('/submit-request', async (req, res) => {
         });
       }
     } else {
+      // New check: Ensure the user is a student first
+      const studentUser = await User.findOne({ email, roles: 'student' });
+      if (!studentUser) {
+        return res.status(400).json({
+          message: 'TO REGESTER AS A CLUB MEMBER YOU MUST BE A STUDENT - PLEASE CREATE A STUDENT ACCOUNT FIRST'
+        });
+      }
+
       // For clubMember: check if username or email exists for this specific club
       existingUser = await User.findOne({ 
         $or: [
