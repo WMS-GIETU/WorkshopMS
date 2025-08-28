@@ -59,11 +59,11 @@ const ClubmemLogin = () => {
         <form className="login-form" onSubmit={handleLogin}>
           <h2>Club Member Login</h2>
           <div className="form-group">
-            <label>Student Roll no. :</label>
+            <label>Student Name:</label>
             <input 
               type="text" 
               name="rollNumber" 
-              placeholder="Enter Roll Number" 
+              placeholder="Enter your Name" 
               value={rollNumber}
               onChange={(e) => setRollNumber(e.target.value)}
               required 

@@ -397,4 +397,15 @@ router.get('/me', protect, async (req, res) => {
   }
 });
 
+// Get user by ID
+router.get('/user/:userId', protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId).select('-password');
+    res.json({ user });
+  } catch (err) {
+    console.error('Get user by ID error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 module.exports = router;

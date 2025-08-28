@@ -1,30 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const Attendance = require('../models/Attendance');
-const { protect } = require('../middleware/authMiddleware');
+const authMiddleware = require('../middleware/authMiddleware');
 
-// Mark attendance
-router.post('/mark', protect, async (req, res) => {
+router.post('/mark', authMiddleware, async (req, res) => {
+  const { workshopId, presentUserIds } = req.body;
+
   try {
-    const { workshopId, presentUserIds } = req.body;
-
-    // Create attendance records for each present user
-    const attendanceRecords = presentUserIds.map(userId => ({
+    const attendanceRecords = presentUserIds.map((userId) => ({
       workshop: workshopId,
       user: userId,
-      status: 'present',
     }));
 
-    // Use insertMany for efficiency
-    await Attendance.insertMany(attendanceRecords, { ordered: false });
+    await Attendance.insertMany(attendanceRecords);
 
     res.status(201).json({ message: 'Attendance marked successfully' });
   } catch (error) {
-    // Ignore duplicate key errors if a user's attendance is already marked
-    if (error.code === 11000) {
-      return res.status(201).json({ message: 'Attendance marked successfully (some were already marked)' });
-    }
-    res.status(500).json({ message: 'Failed to mark attendance' });
+    console.error('Error marking attendance:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 

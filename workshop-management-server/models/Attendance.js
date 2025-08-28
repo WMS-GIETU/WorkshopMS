@@ -11,18 +11,10 @@ const attendanceSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  date: {
+  timestamp: {
     type: Date,
     default: Date.now,
   },
-  status: {
-    type: String,
-    enum: ['present', 'absent'],
-    default: 'present',
-  },
 });
-
-// Ensure a user's attendance for a specific workshop on a specific date is unique
-attendanceSchema.index({ workshop: 1, user: 1, date: 1 }, { unique: true });
 
 module.exports = mongoose.model('Attendance', attendanceSchema);

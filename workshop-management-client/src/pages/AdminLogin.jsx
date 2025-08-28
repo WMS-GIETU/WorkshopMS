@@ -65,11 +65,11 @@ const AdminLogin = () => {
         <form className="login-form" onSubmit={handleLogin}>
           <h2>Admin Login</h2>
           <div className="form-group">
-            <label>Admin ID:</label>
+            <label>Admin Name:</label>
             <input
               type="text"
               name="adminId"
-              placeholder="Enter Admin ID"
+              placeholder="Enter Your Name"
               value={adminId}
               onChange={(e) => setAdminId(e.target.value)}
               required

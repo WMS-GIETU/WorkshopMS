@@ -114,7 +114,7 @@ const Sidebar = () => {
               </li>
               <li>
                 <Link to="/attendance">
-                  <i className="fas fa-check-square"></i> Attendance
+                  <i className="fas fa-camera"></i> Attendance
                 </Link>
               </li>
               <li>
@@ -142,7 +142,7 @@ const Sidebar = () => {
               </li>
               <li>
                 <Link to="/attendance">
-                  <i className="fas fa-check-square"></i> Attendance
+                  <i className="fas fa-camera"></i> Attendance
                 </Link>
               </li>
               <li>

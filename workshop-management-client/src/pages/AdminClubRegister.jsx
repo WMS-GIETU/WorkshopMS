@@ -179,7 +179,7 @@ const Register = () => {
           <h2>Submit Registration Request</h2>
 
           <div className="form-group">
-            <label>Username:</label>
+            <label>User Name:</label>
             <input
               type="text"
               name="username"

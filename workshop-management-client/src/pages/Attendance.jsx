@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
+import Camera from '../components/Camera';
 import { useAuth } from '../context/AuthContext';
 import './Attendance.css';
 
@@ -13,11 +14,44 @@ const Attendance = () => {
   const [selectedWorkshop, setSelectedWorkshop] = useState(null);
   const [presentUserIds, setPresentUserIds] = useState(new Set());
   const [modalMode, setModalMode] = useState('view'); // 'view' or 'mark'
+  const [scanFace, setScanFace] = useState(false);
+  const [scannedUser, setScannedUser] = useState(null);
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingWorkshop, setEditingWorkshop] = useState(null);
   
   const [editingWorkshopId, setEditingWorkshopId] = useState(null);
+
+  const handleFaceScan = async (userId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`/api/auth/user/${userId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setScannedUser(data.user);
+      } else {
+        alert('User not found.');
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      alert('An error occurred while fetching user data.');
+    }
+  };
+
+  const handleConfirmAttendance = (user) => {
+    setParticipants([...participants, { user }]);
+    setScannedUser(null);
+    setScanFace(false);
+  };
+
+  const handleRetryScan = () => {
+    setScannedUser(null);
+  };
 
   useEffect(() => {
     if (user && user.clubCode) {
@@ -210,6 +244,8 @@ const Attendance = () => {
     setParticipants([]);
     setSelectedWorkshop(null);
     setPresentUserIds(new Set());
+    setScanFace(false);
+    setScannedUser(null);
   };
 
   const closeEditModal = () => {
@@ -283,32 +319,64 @@ const Attendance = () => {
         </div>
       </div>
 
-      {isModalOpen && (
+      {isModalOpen && modalMode === 'view' && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h2>{modalMode === 'view' ? 'Workshop Participants' : 'Mark Attendance'}</h2>
+            <h2>Workshop Participants</h2>
             {participants.length > 0 ? (
               <div>
                 <ul>
                   {participants.map(reg => (
                     <li key={reg._id}>
-                      {modalMode === 'mark' && (
-                        <input 
-                          type="checkbox" 
-                          checked={presentUserIds.has(reg.user._id)}
-                          onChange={() => handleCheckboxChange(reg.user._id)}
-                        />
-                      )}
                       {reg.user.username} ({reg.user.email})
                     </li>
                   ))}
                 </ul>
-                {modalMode === 'mark' && (
-                  <button onClick={handleAttendanceSubmit}>Submit Attendance</button>
-                )}
               </div>
             ) : (
               <p>No participants registered for this workshop yet.</p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {isModalOpen && modalMode === 'mark' && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h2>Mark Attendance</h2>
+            <div className="attendance-modal-header">
+                <button onClick={() => setScanFace(true)}>New</button>
+                <button onClick={closeModal}>Close</button>
+            </div>
+            {scanFace ? (
+              <div>
+                <Camera onFaceScan={handleFaceScan} />
+                {scannedUser && (
+                  <div>
+                    <p>Name: {scannedUser.username}</p>
+                    <p>Roll No: {scannedUser.roll_no}</p>
+                    <button onClick={() => handleConfirmAttendance(scannedUser)}>Confirm</button>
+                    <button onClick={handleRetryScan}>Retry</button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <table className="attendance-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Roll No</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {participants.map((participant) => (
+                    <tr key={participant.user._id}>
+                      <td>{participant.user.username}</td>
+                      <td>{participant.user.roll_no}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             )}
           </div>
         </div>
