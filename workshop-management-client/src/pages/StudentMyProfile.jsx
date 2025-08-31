@@ -429,7 +429,7 @@ const StudentMyProfile = () => {
                   </div>
                 )}
 
-                {(!hasFaceData || updateRequestStatus === 'approved') && (
+                {((!hasFaceData && updateRequestStatus === 'none') || updateRequestStatus === 'approved') && (
                   <div className="face-scan-controls">
                     <button
                       onClick={handleScanButtonClick}
