@@ -4,6 +4,7 @@ const User = require('../models/User');
 const FaceData = require('../models/FaceData');
 const FaceUpdateRequest = require('../models/FaceUpdateRequest');
 const { protect, authorize } = require('../middleware/authMiddleware');
+const { sendEmail, emailTemplates } = require('../config/email');
 
 router.get('/', protect, authorize(['admin', 'clubMember']), async (req, res) => {
   try {
@@ -62,6 +63,24 @@ router.post('/request-update', protect, authorize(['student']), async (req, res)
 
   try {
     const updateRequest = await FaceUpdateRequest.create({ userId, reason });
+
+    // Fetch user details for the email
+    const user = await User.findById(userId);
+
+    if (user && process.env.ADMIN_EMAIL) {
+      await sendEmail(
+        process.env.ADMIN_EMAIL,
+        'faceUpdateRequest',
+        {
+          username: user.username,
+          rollNo: user.rollNo,
+          email: user.email,
+          reason: reason,
+          requestId: updateRequest._id,
+        }
+      );
+    }
+
     res.status(201).json({ message: 'Face data update request submitted successfully', updateRequest });
   } catch (error) {
     console.error('Error submitting face data update request:', error);
