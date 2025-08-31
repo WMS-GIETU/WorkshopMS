@@ -88,4 +88,81 @@ router.post('/request-update', protect, authorize(['student']), async (req, res)
   }
 });
 
+// Route to approve face data update request
+router.get('/approve-update-request/:requestId', async (req, res) => {
+  try {
+    const { requestId } = req.params;
+    const updateRequest = await FaceUpdateRequest.findById(requestId);
+
+    if (!updateRequest) {
+      return res.status(404).send('Face update request not found.');
+    }
+
+    if (updateRequest.status !== 'pending') {
+      return res.status(400).send(`Request already ${updateRequest.status}.`);
+    }
+
+    updateRequest.status = 'approved';
+    await updateRequest.save();
+
+    // Optionally, delete existing face data for the user if they are updating
+    await FaceData.deleteOne({ userId: updateRequest.userId });
+
+    // Send email notification to the student
+    const user = await User.findById(updateRequest.userId);
+    if (user) {
+      await sendEmail(
+        user.email,
+        'faceUpdateNotification',
+        {
+          username: user.username,
+          status: 'approved',
+        }
+      );
+    }
+
+    res.status(200).send('Face data update request approved. Student notified.');
+  } catch (error) {
+    console.error('Error approving face data update request:', error);
+    res.status(500).send('Internal server error during approval.');
+  }
+});
+
+// Route to reject face data update request
+router.get('/reject-update-request/:requestId', async (req, res) => {
+  try {
+    const { requestId } = req.params;
+    const updateRequest = await FaceUpdateRequest.findById(requestId);
+
+    if (!updateRequest) {
+      return res.status(404).send('Face update request not found.');
+    }
+
+    if (updateRequest.status !== 'pending') {
+      return res.status(400).send(`Request already ${updateRequest.status}.`);
+    }
+
+    updateRequest.status = 'rejected';
+    await updateRequest.save();
+
+    // Send email notification to the student
+    const user = await User.findById(updateRequest.userId);
+    if (user) {
+      await sendEmail(
+        user.email,
+        'faceUpdateNotification',
+        {
+          username: user.username,
+          status: 'rejected',
+        }
+      );
+    }
+
+    res.status(200).send('Face data update request rejected. Student notified.');
+  } catch (error) {
+    console.error('Error rejecting face data update request:', error);
+    res.status(500).send('Internal server error during rejection.');
+  }
+});
+
 module.exports = router;
