@@ -9,6 +9,7 @@ const StudentRegister = () => {
   const [step, setStep] = useState(1);
   const [fullName, setFullName] = useState('');
   const [rollNo, setRollNo] = useState(''); // Added rollNo state
+  const [mobileNumber, setMobileNumber] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [otp, setOtp] = useState('');
@@ -25,7 +26,8 @@ const StudentRegister = () => {
         username: fullName, 
         email, 
         name: fullName, 
-        rollNo 
+        rollNo, 
+        mobileNumber 
       });
       setMessage(response.data.message);
       setStep(2);
@@ -45,7 +47,8 @@ const StudentRegister = () => {
         password, 
         otp, 
         name: fullName, 
-        rollNo 
+        rollNo, 
+        mobileNumber 
       });
       setMessage(response.data.message + ' Redirecting to login...');
       setTimeout(() => {
@@ -85,6 +88,15 @@ const StudentRegister = () => {
                   value={rollNo}
                   onChange={(e) => setRollNo(e.target.value)}
                   required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="mobileNumber">Mobile Number (Optional)</label>
+                <input
+                  type="text"
+                  id="mobileNumber"
+                  value={mobileNumber}
+                  onChange={(e) => setMobileNumber(e.target.value)}
                 />
               </div>
               <div className="form-group">

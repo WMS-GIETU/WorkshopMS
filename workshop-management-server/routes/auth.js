@@ -10,7 +10,7 @@ const router = express.Router();
 
 // Register
 router.post('/register', async (req, res) => {
-  const { username, email, password, role, clubCode } = req.body;
+  const { username, email, password, role, clubCode, mobileNumber } = req.body;
   try {
     console.log('Registration attempt:', { username, email, role, clubCode });
 
@@ -61,7 +61,8 @@ router.post('/register', async (req, res) => {
       email, 
       password: hashedPassword, 
       roles: [role], 
-      clubCode: normalizedClubCode 
+      clubCode: normalizedClubCode, 
+      mobileNumber 
     });
     await user.save();
 
@@ -331,7 +332,7 @@ router.put('/users/:userId', protect, async (req, res) => {
 
 // Student Registration - Verify OTP
 router.post('/verify-student', async (req, res) => {
-  const { username, email, password, otp, name, rollNo } = req.body; // Added name and rollNo
+  const { username, email, password, otp, name, rollNo, mobileNumber } = req.body; // Added name and rollNo
 
   try {
     // Find the OTP for the given email
@@ -364,6 +365,7 @@ router.post('/verify-student', async (req, res) => {
       clubCode: 'student', 
       name, // Save the student's name
       rollNo, // Save the student's roll number
+      mobileNumber, // Save the student's mobile number
     });
 
     await newUser.save();
@@ -404,6 +406,31 @@ router.get('/user/:userId', protect, async (req, res) => {
     res.json({ user });
   } catch (err) {
     console.error('Get user by ID error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Update user profile (name and mobileNumber only)
+router.put('/profile', protect, async (req, res) => {
+  try {
+    const userId = req.user.userId; // Get user ID from authenticated token
+    const { name, mobileNumber } = req.body;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    // Update only allowed fields
+    user.name = name !== undefined ? name : user.name;
+    user.mobileNumber = mobileNumber !== undefined ? mobileNumber : user.mobileNumber;
+
+    await user.save();
+
+    res.json({ message: 'Profile updated successfully!', user: user });
+  } catch (err) {
+    console.error('Update profile error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });

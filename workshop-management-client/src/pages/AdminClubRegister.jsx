@@ -9,6 +9,7 @@ const Register = () => {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
+    mobileNumber: '',
     password: '',
     confirmPassword: '',
     role: 'clubMember', // default role
@@ -132,12 +133,13 @@ const Register = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
+                body: JSON.stringify({
           username: formData.username,
           email: formData.email,
           password: formData.password,
           role: formData.role,
-          clubCode: formData.clubCode
+          clubCode: formData.clubCode,
+          mobileNumber: formData.mobileNumber
         }),
       });
 
@@ -202,6 +204,17 @@ const Register = () => {
               className={errors.email ? 'error' : ''}
             />
             {errors.email && <span className="error-message">{errors.email}</span>}
+          </div>
+
+          <div className="form-group">
+            <label>Mobile Number (Optional):</label>
+            <input
+              type="text"
+              name="mobileNumber"
+              placeholder="Enter mobile number"
+              value={formData.mobileNumber}
+              onChange={handleChange}
+            />
           </div>
 
           <div className="form-group">

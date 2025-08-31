@@ -52,6 +52,28 @@ export const AuthProvider = ({ children }) => {
     setUser(userData);
   };
 
+  const refreshUser = useCallback(async () => {
+    if (!token) return;
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/me`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        const updatedUser = await response.json();
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+        setUser(updatedUser);
+      } else {
+        console.error('Failed to refresh user data:', response.statusText);
+        logout();
+      }
+    } catch (error) {
+      console.error('Network error during user refresh:', error);
+      logout();
+    }
+  }, [token, logout]);
+
   const isAuthenticated = useCallback(() => {
     return !!user && !!token;
   }, [user, token]);
@@ -68,7 +90,8 @@ export const AuthProvider = ({ children }) => {
     logout,
     isAuthenticated,
     isAdmin,
-    loading
+    loading,
+    refreshUser
   };
 
   return (

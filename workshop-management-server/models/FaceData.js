@@ -7,8 +7,8 @@ const FaceDataSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  faceDescriptor: {
-    type: [Number],
+  faceDescriptors: {
+    type: [[Number]],
     required: true,
   },
 }, {

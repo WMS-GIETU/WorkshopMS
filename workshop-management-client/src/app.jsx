@@ -20,6 +20,7 @@ import About from './pages/About';
 import RequestWorkshop from './pages/RequestWorkshop';
 import PrivateRoute from './components/PrivateRoute';
 
+
 // Student-specific imports
 import StudentRegister from './pages/StudentRegister';
 import StudentLogin from './pages/StudentLogin';
@@ -51,6 +52,7 @@ const App = () => {
           <Route path="/reject-request/:requestId" element={<RejectRequest />} />
           <Route path="/workshops" element={<Workshops />} /> {/* New: Route for listing workshops */}
           <Route path="/about" element={<About />} />
+          
 
           {/* Student Routes */}
           <Route path="/student-login" element={<StudentLogin />} />
