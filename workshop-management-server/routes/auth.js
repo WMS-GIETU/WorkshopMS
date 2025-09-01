@@ -174,7 +174,8 @@ router.post('/login', async (req, res) => {
       username: user.username,
       email: user.email,
       roles: user.roles,
-      clubCode: user.clubCode
+      clubCode: user.clubCode,
+      mobileNumber: user.mobileNumber // Include mobileNumber here
     };
 
     // Add student-specific fields if the user is a student
