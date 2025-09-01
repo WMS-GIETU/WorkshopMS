@@ -39,10 +39,9 @@ router.get('/workshop/:workshopId', protect, async (req, res) => {
 });
 
 // Get all workshops a user is registered for
-router.get('/user/:userId', protect, async (req, res) => {
+router.get('/my-workshops', protect, async (req, res) => {
   try {
-    const { userId } = req.params;
-    const registrations = await WorkshopRegistration.find({ user: userId }).populate('workshop');
+    const registrations = await WorkshopRegistration.find({ user: req.user.userId }).populate('workshop');
     res.json(registrations);
   } catch (error) {
     res.status(500).json({ message: 'Failed to fetch user registrations' });
