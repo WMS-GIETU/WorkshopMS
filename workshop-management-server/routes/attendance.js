@@ -92,6 +92,7 @@ router.get('/my-attended-workshops', protect, async (req, res) => {
     const workshops = attendances.map(attendance => attendance.workshop);
     res.json(workshops);
   } catch (error) {
+    console.error('Failed to fetch attended workshops:', error);
     res.status(500).json({ message: 'Failed to fetch attended workshops' });
   }
 });
