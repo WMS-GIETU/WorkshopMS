@@ -41,6 +41,18 @@ router.post('/mark', protect, authorize(['admin', 'clubMember']), async (req, re
   }
 });
 
+// Get all workshops a user has attended
+router.get('/my-attended-workshops', protect, async (req, res) => {
+  try {
+    const attendances = await WorkshopAttendance.find({ 'attendees.user': req.user.userId }).populate('workshop');
+    const workshops = attendances.map(attendance => attendance.workshop);
+    res.json(workshops);
+  } catch (error) {
+    console.error('Failed to fetch attended workshops:', error);
+    res.status(500).json({ message: 'Failed to fetch attended workshops' });
+  }
+});
+
 // Get attendance for a workshop
 router.get('/:workshopId', protect, async (req, res) => {
   try {
@@ -53,47 +65,6 @@ router.get('/:workshopId', protect, async (req, res) => {
   } catch (err) {
     console.error('Get attendance error:', err);
     res.status(500).json({ message: 'Server error' });
-  }
-});
-
-// Remove an attendee from a workshop's attendance
-router.delete('/:workshopId/attendees/:userId', protect, authorize(['admin', 'clubMember']), async (req, res) => {
-  console.log('DELETE /:workshopId/attendees/:userId route hit');
-  const { workshopId, userId } = req.params;
-
-  try {
-    const attendance = await WorkshopAttendance.findOne({ workshop: workshopId });
-
-    if (!attendance) {
-      return res.status(404).json({ message: 'Attendance record not found for this workshop.' });
-    }
-
-    // Find the index of the attendee to remove
-    const attendeeIndex = attendance.attendees.findIndex(attendee => attendee.user.toString() === userId);
-
-    if (attendeeIndex > -1) {
-      // Remove the attendee
-      attendance.attendees.splice(attendeeIndex, 1);
-      await attendance.save();
-      res.json({ message: 'Attendee removed successfully.' });
-    } else {
-      res.status(404).json({ message: "Attendee not found in this workshop's attendance." });
-    }
-  } catch (error) {
-    console.error('Error removing attendee:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-// Get all workshops a user has attended
-router.get('/my-attended-workshops', protect, async (req, res) => {
-  try {
-    const attendances = await WorkshopAttendance.find({ 'attendees.user': req.user.userId }).populate('workshop');
-    const workshops = attendances.map(attendance => attendance.workshop);
-    res.json(workshops);
-  } catch (error) {
-    console.error('Failed to fetch attended workshops:', error);
-    res.status(500).json({ message: 'Failed to fetch attended workshops' });
   }
 });
 module.exports = router;
