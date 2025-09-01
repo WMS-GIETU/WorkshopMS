@@ -51,6 +51,7 @@ const StudentMyProfile = () => {
 
   useEffect(() => {
     if (user) {
+      console.log('User data:', user);
       setProfileData({
         name: user.name,
         rollNo: user.rollNo,
@@ -66,6 +67,7 @@ const StudentMyProfile = () => {
   useEffect(() => {
     const fetchFaceStatus = async () => {
       if (!user || !token) return;
+      console.log('Fetching face status with token:', token);
       try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/api/face/status`, {
           method: 'GET',
